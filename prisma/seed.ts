@@ -81,7 +81,7 @@ async function createAdspace(
   maxHeight: number,
   imageUrl: string,
   isBarterAvailable: boolean = false,
-  pricePerDay?: number,
+  pricePerWeek?: number,
 ) {
   const adspace = await prisma.adspace.create({
     data: {
@@ -93,7 +93,7 @@ async function createAdspace(
       maxHeight,
       imageUrl,
       isBarterAvailable,
-      pricePerDay,
+      pricePerWeek,
     },
   });
   return adspace;
