@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { AdspaceDTO, mapAdspaceToDTO } from './adspace';
 import { TagDTO, mapTagToDTO } from './tag';
+import { mapUserToDTO, UserDTO } from './user';
 
 export type BusinessDTO = {
   id: string;
@@ -14,6 +15,7 @@ export type BusinessDTO = {
   logoUrl?: string;
   tags: TagDTO[];
   coords: Coordinates;
+  owner: UserDTO;
 };
 
 export type BuisinessWithAdspacesDTO = BusinessDTO & {
@@ -25,15 +27,22 @@ export type Coordinates = {
   longitude: number;
 };
 
-type BusinessWithTags = Prisma.BusinessGetPayload<{
-  include: { tags: true };
+type BusinessData = Prisma.BusinessGetPayload<{
+  include: {
+    tags: true;
+    owner: true;
+  };
 }>;
 
-type BusinessWithAdspaces = Prisma.BusinessGetPayload<{
-  include: { tags: true; adspaces: { include: { type: true } } };
+type BusinessDataWithAdspaces = Prisma.BusinessGetPayload<{
+  include: {
+    tags: true;
+    owner: true;
+    adspaces: { include: { type: true } };
+  };
 }>;
 
-export const mapBusinessToDTO = (business: BusinessWithTags): BusinessDTO => ({
+export const mapBusinessToDTO = (business: BusinessData): BusinessDTO => ({
   id: business.id,
   name: business.name,
   description: business.description,
@@ -48,9 +57,12 @@ export const mapBusinessToDTO = (business: BusinessWithTags): BusinessDTO => ({
     latitude: business.latitude,
     longitude: business.longitude,
   },
+  owner: mapUserToDTO(business.owner),
 });
 
-export const mapBusinessWithAdspacesToDTO = (business: BusinessWithAdspaces): BuisinessWithAdspacesDTO => ({
+export const mapBusinessWithAdspacesToDTO = (
+  business: BusinessDataWithAdspaces,
+): BuisinessWithAdspacesDTO => ({
   ...mapBusinessToDTO(business),
   adspaces: business.adspaces.map(mapAdspaceToDTO),
 });

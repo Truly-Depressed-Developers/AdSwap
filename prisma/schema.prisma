@@ -15,9 +15,10 @@ model User {
   password  String
   createdAt DateTime @default(now())
 
-  sessions Session[]
-  messages Message[] @relation("UserMessages")
-  chats    Chat[]
+  sessions   Session[]
+  messages   Message[]  @relation("UserMessages")
+  chats      Chat[]
+  businesses Business[]
 }
 
 model Session {
@@ -42,9 +43,11 @@ model Business {
   latitude    Float
   longitude   Float
   createdAt   DateTime @default(now())
+  ownerId     String
 
   adspaces Adspace[]
   tags     Tag[]
+  owner    User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 model Tag {

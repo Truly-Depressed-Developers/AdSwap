@@ -11,6 +11,7 @@ export const adspaceRouter = router({
         business: {
           include: {
             tags: true,
+            owner: true,
           },
         },
       },
@@ -36,6 +37,17 @@ export const adspaceRouter = router({
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      //if no business associated with user, throw error
+      const userBusiness = await prisma.business.findFirst({
+        where: {
+          ownerId: ctx.user.id,
+        },
+      });
+
+      if (!userBusiness) {
+        throw new Error('User has no associated business');
+      }
+
       const adspace = await prisma.adspace.create({
         data: {
           name: input.name,

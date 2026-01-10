@@ -32,7 +32,15 @@ type AdspaceWithType = Prisma.AdspaceGetPayload<{
 }>;
 
 type AdspaceWithTypeAndBusiness = Prisma.AdspaceGetPayload<{
-  include: { type: true; business: { include: { tags: true } } };
+  include: {
+    type: true;
+    business: {
+      include: {
+        tags: true;
+        owner: true;
+      };
+    };
+  };
 }>;
 
 export const mapAdspaceTypeToDTO = (type: AdspaceType): AdspaceTypeDTO => ({
@@ -56,7 +64,9 @@ export const mapAdspaceToDTO = (adspace: AdspaceWithType): AdspaceDTO => ({
   createdAt: adspace.createdAt,
 });
 
-export const mapAdspaceWithBusinessToDTO = (adspace: AdspaceWithTypeAndBusiness): AdspacesWithBusinessDTO => {
+export const mapAdspaceWithBusinessToDTO = (
+  adspace: AdspaceWithTypeAndBusiness,
+): AdspacesWithBusinessDTO => {
   return {
     ...mapAdspaceToDTO(adspace),
     business: mapBusinessToDTO(adspace.business),

@@ -36,9 +36,9 @@ const createAdspaceFormSchema = (typeIds: [string, ...string[]]) =>
         message: 'Podaj poprawną liczbę',
       })
       .min(0, 'Cena nie może być ujemna')
-      .optional()
       .or(z.literal(NaN))
-      .transform((v) => (isNaN(v as number) ? undefined : v)),
+      .transform((v) => (isNaN(v as number) ? undefined : v))
+      .optional(),
   });
 
 export default function AdspaceForm() {

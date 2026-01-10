@@ -44,6 +44,7 @@ async function createBusiness(
   pkd: string,
   latitude: number,
   longitude: number,
+  ownerId: string,
   tagIds: string[],
 ) {
   const business = await prisma.business.create({
@@ -55,6 +56,7 @@ async function createBusiness(
       pkd,
       latitude,
       longitude,
+      ownerId,
       tags: {
         connect: tagIds.map((id) => ({ id })),
       },
@@ -144,6 +146,7 @@ async function main() {
     '56.30.07',
     40.7128,
     -74.006,
+    user1.id,
     [tagCafe.id, tagOutdoor.id],
   );
 
@@ -155,6 +158,7 @@ async function main() {
     '56.30.20',
     40.758,
     -73.9855,
+    user2.id,
     [tagRestaurant.id],
   );
 

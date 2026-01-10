@@ -12,6 +12,7 @@ export const businessRouter = router({
             type: true,
           },
         },
+        owner: true,
       },
     });
 

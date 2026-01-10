@@ -10,10 +10,19 @@ declare module 'next-auth' {
       email: string;
     };
   }
+
+  interface User {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  }
 }
 
 declare module 'next-auth/jwt' {
   interface JWT {
     id: string;
+    firstName: string;
+    lastName: string;
   }
 }

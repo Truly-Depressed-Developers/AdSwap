@@ -5,6 +5,7 @@ import { chatRouter } from './routers/chatRouter';
 import { exampleRouter } from './routers/example';
 import { messageRouter } from './routers/messageRouter';
 import { tagRouter } from './routers/tagRouter';
+import { userRouter } from './routers/userRouter';
 
 export const appRouter = router({
   example: exampleRouter,
@@ -13,6 +14,7 @@ export const appRouter = router({
   chat: chatRouter,
   message: messageRouter,
   tag: tagRouter,
+  user: userRouter,
 });
 
 export type AppRouter = typeof appRouter;

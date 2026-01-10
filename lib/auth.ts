@@ -47,11 +47,15 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
+      session.user.firstName = token.firstName;
+      session.user.lastName = token.lastName;
       return session;
     },
   },
