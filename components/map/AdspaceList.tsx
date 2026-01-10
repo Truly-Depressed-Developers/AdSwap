@@ -3,11 +3,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { useAdspaceFilters } from './useAdspaceFilters';
-import { mockAdspaces, filterAdspaces } from './mockData';
+import { useAdspaceFilters } from '../../hooks/useAdspaceFilters';
+import { mockAdspaces, filterAdspaces } from '../../mock/mockMapData';
 import { SearchBar } from './SearchBar';
 import { ViewToggle } from './ViewToggle';
 import { FeatureBadge } from './FeatureBadge';
+import { ImageSquareIcon, StarIcon } from '@phosphor-icons/react';
 
 export function AdspaceList() {
   const { filters, updateFilter, clearFilters, activeFiltersCount } = useAdspaceFilters();
@@ -52,33 +53,7 @@ export function AdspaceList() {
               >
                 {/* Image */}
                 <div className="relative h-32 w-24 shrink-0 overflow-hidden rounded-lg bg-muted">
-                  {adspace.imageUrl ? (
-                    <Image
-                      src={adspace.imageUrl}
-                      alt={adspace.name}
-                      fill
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="text-muted-foreground"
-                      >
-                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                        <circle cx="9" cy="9" r="2" />
-                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                      </svg>
-                    </div>
-                  )}
+                  <Image src={adspace.imageUrl} alt={adspace.name} fill className="object-cover" />
                 </div>
 
                 {/* Content */}
@@ -94,16 +69,7 @@ export function AdspaceList() {
                   {/* Rating */}
                   <div className="flex justify-between flex-row w-full items-center mb-3">
                     <div className="flex items-center gap-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="text-yellow-400"
-                      >
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                      </svg>
+                      <StarIcon size={16} className="text-yellow-400" weight="fill" />
                       <span className="text-sm font-medium">4.8</span>
                       <span className="text-sm text-muted-foreground">(12 opinii)</span>
                     </div>

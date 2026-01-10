@@ -127,7 +127,6 @@ export const mockAdspaces: AdspacesWithBusinessDTO[] = [
       address: 'ul. Armii Krajowej 11, 30-150 Kraków',
       nip: '9998887776',
       pkd: '73.12.A',
-      imageUrl: 'https://placehold.co/200x200',
       tags: [],
       coords: { latitude: 50.0789, longitude: 19.8912 },
     },

@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { FilterPanel } from './FilterPanel';
-import type { FilterState } from './useAdspaceFilters';
+import type { FilterState } from '../../hooks/useAdspaceFilters';
 import { Input } from '../ui/input';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '../ui/input-group';
+import { FadersHorizontalIcon, XIcon } from '@phosphor-icons/react';
 
 type SearchBarProps = {
   filters: FilterState;
@@ -61,20 +62,7 @@ export function SearchBar({
                     setSearchValue('');
                   }}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
+                  <XIcon size={14} />
                 </InputGroupButton>
               </InputGroupAddon>
             )}
@@ -84,19 +72,7 @@ export function SearchBar({
                 onClick={() => setFiltersOpen(!filtersOpen)}
                 variant={activeFiltersCount > 0 ? 'default' : 'ghost'}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-                </svg>
+                <FadersHorizontalIcon size={16} />
                 {activeFiltersCount > 0 && (
                   <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] text-destructive-foreground">
                     {activeFiltersCount}

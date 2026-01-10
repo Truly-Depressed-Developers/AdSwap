@@ -7,10 +7,11 @@ import 'leaflet/dist/leaflet.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { useAdspaceFilters } from './useAdspaceFilters';
-import { mockAdspaces, filterAdspaces } from './mockData';
+import { useAdspaceFilters } from '../../hooks/useAdspaceFilters';
+import { mockAdspaces, filterAdspaces } from '../../mock/mockMapData';
 import { SearchBar } from './SearchBar';
 import { ViewToggle } from './ViewToggle';
+import { ImageSquareIcon } from '@phosphor-icons/react';
 
 // Fix for default marker icons in Leaflet with webpack/next.js
 const defaultIcon = L.icon({
@@ -78,27 +79,12 @@ export function AdspaceMap() {
                         className="object-cover"
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="text-muted-foreground"
-                        >
-                          <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                          <circle cx="9" cy="9" r="2" />
-                          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                        </svg>
+                      <div className="w-full h-full flex justify-center items-center text-gray-400 bg-black">
+                        <ImageSquareIcon size={64} />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-black opacity-50"></div>
-                    <div className="absolute text-4xl top-1/2 left-1/2 -translate-1/2 text-foreground">
+                    <div className="absolute inset-0 bg-black opacity-50 z-1000"></div>
+                    <div className="absolute text-4xl top-1/2 left-1/2 -translate-1/2 text-foreground z-1001">
                       4+
                     </div>
                   </div>

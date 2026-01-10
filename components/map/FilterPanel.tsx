@@ -2,8 +2,8 @@
 
 import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
-import { mockAdspaceTypes } from './mockData';
-import type { FilterState } from './useAdspaceFilters';
+import { mockAdspaceTypes } from '../../mock/mockMapData';
+import type { FilterState } from '../../hooks/useAdspaceFilters';
 
 type FilterPanelProps = {
   filters: FilterState;

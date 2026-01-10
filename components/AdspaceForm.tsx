@@ -31,14 +31,14 @@ const createAdspaceFormSchema = (typeIds: [string, ...string[]]) =>
       })
       .min(1, 'Wysokość musi być większa od 0'),
     isBarterAvailable: z.boolean(),
-    pricePerDay: z
+    pricePerWeek: z
       .number({
         message: 'Podaj poprawną liczbę',
       })
       .min(0, 'Cena nie może być ujemna')
-      .optional()
       .or(z.literal(NaN))
-      .transform((v) => (isNaN(v as number) ? undefined : v)),
+      .transform((v) => (isNaN(v as number) ? undefined : v))
+      .optional(),
   });
 
 export default function AdspaceForm() {
@@ -229,7 +229,7 @@ function AdspaceFormInner({ types }: { types: AdspaceTypeDTO[] }) {
               <div className="space-y-4">
                 <Controller
                   control={form.control}
-                  name="pricePerDay"
+                  name="pricePerWeek"
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name}>Stawka dzienna</FieldLabel>
