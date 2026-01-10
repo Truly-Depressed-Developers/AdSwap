@@ -13,7 +13,8 @@ export const createContext = async () => {
     user: {
       id: session.user.id,
       email: session.user.email,
-      name: session.user.name,
+      firstName: session.user.firstName,
+      lastName: session.user.lastName,
     },
   };
 };

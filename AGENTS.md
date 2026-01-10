@@ -1,0 +1,2 @@
+- Do not create unnecessary comments, only comment on the code if it's not self-explanatory
+- All the text should be in Polish
