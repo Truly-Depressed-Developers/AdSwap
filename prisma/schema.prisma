@@ -77,7 +77,7 @@ model Adspace {
   maxHeight         Int
   imageUrl          String
   isBarterAvailable Boolean  @default(false)
-  pricePerDay       Float?
+  pricePerWeek      Float?
   inUse             Boolean  @default(false)
   createdAt         DateTime @default(now())
 

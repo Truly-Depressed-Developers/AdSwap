@@ -33,7 +33,7 @@ export const adspaceRouter = router({
         maxWidth: z.number(),
         maxHeight: z.number(),
         isBarterAvailable: z.boolean(),
-        pricePerDay: z.number().optional(),
+        pricePerWeek: z.number().optional(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -61,7 +61,7 @@ export const adspaceRouter = router({
           maxWidth: input.maxWidth,
           maxHeight: input.maxHeight,
           isBarterAvailable: input.isBarterAvailable,
-          pricePerDay: input.pricePerDay,
+          pricePerWeek: input.pricePerWeek,
           business: {
             connect: {
               id: ctx.user.id,

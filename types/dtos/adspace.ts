@@ -12,7 +12,7 @@ export type AdspaceDTO = {
   maxHeight: number;
   imageUrl: string;
   isBarterAvailable: boolean;
-  pricePerDay?: number;
+  pricePerWeek?: number;
   inUse: boolean;
   createdAt: Date;
 };
@@ -59,7 +59,7 @@ export const mapAdspaceToDTO = (adspace: AdspaceWithType): AdspaceDTO => ({
   maxHeight: adspace.maxHeight,
   imageUrl: adspace.imageUrl,
   isBarterAvailable: adspace.isBarterAvailable,
-  pricePerDay: adspace.pricePerDay ?? undefined,
+  pricePerWeek: adspace.pricePerWeek ?? undefined,
   inUse: adspace.inUse,
   createdAt: adspace.createdAt,
 });
