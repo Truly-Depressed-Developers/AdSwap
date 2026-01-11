@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Roboto } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/providers/Providers';
-import { NavbarProvider } from '@/hooks/useNavbar';
 import { LayoutInner } from './layoutInner';
 
 const roboto = Roboto({ subsets: ['latin'], variable: '--font-sans', weight: ['400', '500', '700'] });

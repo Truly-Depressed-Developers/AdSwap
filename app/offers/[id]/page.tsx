@@ -93,7 +93,7 @@ export default function OfferDetailPage() {
 
         {/* Description */}
         {adspace.description && (
-          <p className="text-base leading-relaxed">{adspace.description}</p>
+          <p className="text-base text-justify text-gray-800 leading-relaxed">{adspace.description}</p>
         )}
 
         {/* Badges and price row */}
@@ -149,9 +149,9 @@ export default function OfferDetailPage() {
         {/* Business card */}
         <div className="flex items-center gap-3 py-2">
           <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-muted">
-            {adspace.business.imageUrl ? (
+            {adspace.business.logoUrl ? (
               <Image
-                src={adspace.business.imageUrl}
+                src={adspace.business.logoUrl}
                 alt={adspace.business.name}
                 fill
                 className="object-cover"
