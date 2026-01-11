@@ -25,7 +25,7 @@ export default function MyOffers() {
   // Loading session
   if (status === 'loading') {
     return (
-      <div className="flex h-dvh w-full items-center justify-center bg-background">
+      <div className="flex h-full w-full items-center justify-center bg-background">
         <span className="text-muted-foreground">Ładowanie...</span>
       </div>
     );
@@ -34,7 +34,7 @@ export default function MyOffers() {
   // Not logged in
   if (status === 'unauthenticated') {
     return (
-      <div className="flex h-dvh w-full flex-col items-center justify-center gap-4 bg-background">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-background">
         <p className="text-lg font-medium">Musisz być zalogowany</p>
         <p className="text-sm text-muted-foreground">Zaloguj się, aby zobaczyć swoje ogłoszenia</p>
         <Link href="/auth/signin">
@@ -47,14 +47,14 @@ export default function MyOffers() {
   // Loading adspaces
   if (adspacesLoading) {
     return (
-      <div className="flex h-dvh w-full items-center justify-center bg-background">
+      <div className="flex h-full w-full items-center justify-center bg-background">
         <span className="text-muted-foreground">Ładowanie ogłoszeń...</span>
       </div>
     );
   }
 
   return (
-    <div className="flex h-dvh w-full flex-col bg-background">
+    <div className="flex w-full flex-col bg-background">
       {/* Fixed header with search */}
       <div className="shrink-0 border-b bg-background px-4 py-4">
         <div className="flex items-center justify-between mb-4">

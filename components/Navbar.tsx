@@ -15,22 +15,22 @@ const navItems: NavItem[] = [
   {
     href: '/offers/list',
     label: 'Oferty',
-    icon: <MapTrifoldIcon size={24} />,
+    icon: <MapTrifoldIcon size={32} weight='fill' />,
   },
   {
     href: '/my-offers',
     label: 'Moje oferty',
-    icon: <NoteIcon size={24} />,
+    icon: <NoteIcon size={32} weight='fill' />,
   },
   {
     href: '/chats',
     label: 'Chaty',
-    icon: <ChatCircleDotsIcon size={24} />,
+    icon: <ChatCircleDotsIcon size={32} weight='fill' />,
   },
   {
     href: '/profile',
     label: 'Profil',
-    icon: <UserIcon size={24} />,
+    icon: <UserIcon size={32} weight='fill' />,
   },
 ];
 
@@ -55,12 +55,12 @@ export function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-1 flex-col items-center justify-center gap-1 px-4 py-3 transition-colors ${
-                active ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+              className={`flex flex-1 flex-col items-center justify-center gap-1 py-3 transition-colors ${
+                active ? 'text-primary' : 'text-ring hover:text-foreground'
               }`}
             >
               {item.icon}
-              <span className="text-xs font-medium">{item.label}</span>
+              <span className=" ">{item.label}</span>
             </Link>
           );
         })}

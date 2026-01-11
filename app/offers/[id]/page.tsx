@@ -11,6 +11,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useNavbar } from '@/hooks/useNavbar';
 
 const defaultIcon = L.icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -30,6 +31,12 @@ export default function OfferDetailPage() {
   const id = params.id as string;
   const [mounted, setMounted] = useState(false);
 
+    const { setIsVisible } = useNavbar();
+    useEffect(() => {
+      setIsVisible(false);
+      return () => setIsVisible(true);
+    }, [setIsVisible]);
+
   const { data: adspace, isLoading, isError } = trpc.adspace.getById.useQuery({ id });
 
   useEffect(() => {
@@ -38,7 +45,7 @@ export default function OfferDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-dvh w-full items-center justify-center bg-background">
+      <div className="flex h-full w-full items-center justify-center bg-background">
         <span className="text-muted-foreground">Ładowanie...</span>
       </div>
     );
@@ -189,7 +196,7 @@ export default function OfferDetailPage() {
       </div>
 
       {/* Fixed bottom button */}
-      <div className="sticky bottom-0 p-4 bg-background border-t">
+      <div className="sticky bottom-0 p-4 bg-background border-t z-[10000]">
         <Button className="w-full" size="lg">
           Napisz Wiadomość
         </Button>

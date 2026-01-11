@@ -1,6 +1,6 @@
 export default function PlanPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background p-4">
+    <div className="flex min-h-full flex-col bg-background p-4">
       <header className="flex h-16 items-center justify-center">
         <h1 className="text-xl font-bold">Twój plan</h1>
       </header>

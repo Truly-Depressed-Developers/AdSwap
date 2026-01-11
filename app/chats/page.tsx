@@ -84,7 +84,7 @@ export default function ChatsPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-full bg-background">
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b p-4 text-center">
         <h1 className="text-lg font-semibold">Czaty</h1>
       </header>

@@ -20,14 +20,14 @@ export function AdspaceList() {
 
   if (isLoading) {
     return (
-      <div className="flex h-dvh w-full items-center justify-center bg-background">
+      <div className="flex h-full w-full items-center justify-center bg-background">
         <span className="text-muted-foreground">Ładowanie...</span>
       </div>
     );
   }
 
   return (
-    <div className="flex h-dvh w-full flex-col bg-background">
+    <div className="flex h-full w-full flex-col bg-background">
       {/* Fixed header with search */}
       <div className="shrink-0 border-b bg-background px-4 py-4">
         <div className="flex items-center gap-3 flex-col">

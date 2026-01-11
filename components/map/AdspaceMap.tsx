@@ -47,14 +47,14 @@ export function AdspaceMap() {
 
   if (!mounted || isLoading) {
     return (
-      <div className="flex h-dvh w-full items-center justify-center bg-muted">
+      <div className="flex h-full w-full items-center justify-center bg-muted">
         <span className="text-muted-foreground">Ładowanie mapy...</span>
       </div>
     );
   }
 
   return (
-    <div className="relative h-dvh w-full">
+    <div className="relative h-full w-full">
       {/* Map - fullscreen */}
       <MapContainer
         center={KRAKOW_CENTER}
