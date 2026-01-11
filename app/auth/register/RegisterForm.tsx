@@ -165,7 +165,7 @@ export function RegisterForm() {
           </div>
         </CardContent>
 
-        <div className="flex flex-col gap-4 border-t p-6">
+        <div className="flex flex-col gap-4 p-6">
           <Button
             type="submit"
             size="lg"

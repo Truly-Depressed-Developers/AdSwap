@@ -112,7 +112,7 @@ export function PasswordForm() {
           </div>
         </CardContent>
 
-        <div className="flex flex-col gap-4 border-t p-6">
+        <div className="flex flex-col gap-4 p-6">
           <Button
             type="submit"
             className="w-full sm:w-auto"
