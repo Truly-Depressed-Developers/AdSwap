@@ -19,7 +19,7 @@ export type ChatDTO = {
   unreadCount: number;
   businessContext: {
     name: string;
-    logoUrl?: string | null;
+    logoUrl?: string;
   } | null;
 };
 
@@ -54,20 +54,20 @@ export const mapMessageToDTO = (message: Message): MessageDTO => ({
 });
 
 export const mapChatToDTO = (chat: ChatWithRelations, unreadCount = 0): ChatDTO => {
-  const participants = chat.participants.map(mapUserToDTO) as [UserDTO, UserDTO];
+  const participants = chat.participants.map(mapUserToDTO);
   const lastMessage = chat.messages[0] ? mapMessageToDTO(chat.messages[0]) : null;
 
   const firstAdspace = chat.adspaces[0];
   const businessContext = firstAdspace?.business
     ? {
         name: firstAdspace.business.name,
-        logoUrl: firstAdspace.business.logoUrl,
+        logoUrl: firstAdspace.business.logoUrl || undefined,
       }
     : null;
 
   return {
     id: chat.id,
-    participants,
+    participants: participants as [UserDTO, UserDTO],
     connectedAdspaces: chat.adspaces.map(mapAdspaceToDTO),
     lastMessage,
     unreadCount,
