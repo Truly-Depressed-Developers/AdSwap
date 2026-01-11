@@ -9,6 +9,8 @@ import { filterAdspaces } from '@/lib/filterAdspaces';
 import { trpc } from '@/trpc/client';
 import { SearchBar } from '@/components/map/SearchBar';
 import { AdspaceCard } from '@/components/map/AdspaceCard';
+import { PlusIcon } from '@phosphor-icons/react';
+import { PageHeader } from '@/components/PageHeader';
 
 export default function MyOffers() {
   const { data: session, status } = useSession();
@@ -56,18 +58,14 @@ export default function MyOffers() {
   return (
     <div className="flex w-full flex-col bg-background">
       {/* Fixed header with search */}
-      <div className="shrink-0 border-b bg-background px-4 py-4">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-xl font-semibold">Moje ogłoszenia</h1>
-          <Link href="/my-offers/create-offer">
-            <Button size="sm">Dodaj ogłoszenie</Button>
-          </Link>
-        </div>
+      <div className="shrink-0 border-b bg-background p-4 pt-0">
+        <PageHeader title="Moje ogłoszenia" hideLine={true} />
         <SearchBar
           filters={filters}
           onFilterChange={updateFilter}
           onClear={clearFilters}
           activeFiltersCount={activeFiltersCount}
+          className='h-12'
         />
       </div>
 
@@ -103,6 +101,12 @@ export default function MyOffers() {
           )}
         </div>
       </div>
+
+      <Link href="/my-offers/create-offer" className="absolute bottom-5 right-5 z-50">
+        <Button size='icon-lg' className="h-14 w-14 rounded-full shadow-lg">
+          <PlusIcon size={32} className='size-7' />
+        </Button>
+      </Link>
     </div>
   );
 }

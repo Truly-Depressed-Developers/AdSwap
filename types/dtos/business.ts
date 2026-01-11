@@ -2,6 +2,7 @@ import { Prisma } from '@prisma/client';
 import { AdspaceDTO, mapAdspaceToDTO } from './adspace';
 import { TagDTO, mapTagToDTO } from './tag';
 import { mapUserToDTO, UserDTO } from './user';
+import { RatingDTO, mapRatingToDTO } from './rating';
 
 export type BusinessDTO = {
   id: string;
@@ -23,12 +24,28 @@ export type BuisinessWithAdspacesDTO = BusinessDTO & {
   adspaces: AdspaceDTO[];
 };
 
+export type AdspaceCardDTO = {
+  id: string;
+  name: string;
+  imageUrl: string;
+  type: string;
+  pricePerWeek?: number;
+  isBarterAvailable: boolean;
+  inUse: boolean;
+};
+
+export type BusinessDetailDTO = BusinessDTO & {
+  adspaces: AdspaceCardDTO[];
+  ratings: RatingDTO[];
+  averageRating?: number;
+};
+
 export type Coordinates = {
   latitude: number;
   longitude: number;
 };
 
-type BusinessData = Prisma.BusinessGetPayload<{
+export type BusinessData = Prisma.BusinessGetPayload<{
   include: {
     tags: true;
     owner: true;
@@ -40,6 +57,15 @@ type BusinessDataWithAdspaces = Prisma.BusinessGetPayload<{
     tags: true;
     owner: true;
     adspaces: { include: { type: true } };
+  };
+}>;
+
+type BusinessDataWithDetails = Prisma.BusinessGetPayload<{
+  include: {
+    tags: true;
+    owner: true;
+    adspaces: { include: { type: true } };
+    ratings: { include: { user: true } };
   };
 }>;
 
@@ -68,3 +94,30 @@ export const mapBusinessWithAdspacesToDTO = (
   ...mapBusinessToDTO(business),
   adspaces: business.adspaces.map(mapAdspaceToDTO),
 });
+
+export const mapAdspaceToCardDTO = (
+  adspace: Prisma.AdspaceGetPayload<{ include: { type: true } }>,
+): AdspaceCardDTO => ({
+  id: adspace.id,
+  name: adspace.name,
+  imageUrl: adspace.imageUrl,
+  type: adspace.type.name,
+  pricePerWeek: adspace.pricePerWeek ?? undefined,
+  isBarterAvailable: adspace.isBarterAvailable,
+  inUse: adspace.inUse,
+});
+
+export const mapBusinessToDetailDTO = (business: BusinessDataWithDetails): BusinessDetailDTO => {
+  const ratings = business.ratings.map(mapRatingToDTO);
+  const averageRating =
+    ratings.length > 0
+      ? ratings.reduce((sum, rating) => sum + rating.score, 0) / ratings.length
+      : undefined;
+
+  return {
+    ...mapBusinessToDTO(business),
+    adspaces: business.adspaces.map(mapAdspaceToCardDTO),
+    ratings,
+    averageRating,
+  };
+};

@@ -46,19 +46,19 @@ export function SearchBar({
       <div className={`w-full flex items-center gap-2 ${className}`}>
         {/* Search input */}
         <div className="relative flex-1">
-          <InputGroup className="bg-background">
+          <InputGroup className="bg-background h-12">
             <InputGroupInput
               type="text"
               placeholder="Szukaj..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
+              className='h-12'
             />
 
             {searchValue && (
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
                   onClick={() => {
-                    console.log('dupa');
                     setSearchValue('');
                   }}
                 >

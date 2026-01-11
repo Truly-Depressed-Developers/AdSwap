@@ -14,7 +14,7 @@ export function LayoutInner({
   
   return (
     <div className={cn("grid h-screen", isVisible ? "grid-rows-[1fr_84px]" : "grid-rows-[1fr]")}>
-      <main className="overflow-y-auto">{children}</main>
+      <main className="overflow-y-auto relative">{children}</main>
       <Navbar />
     </div>
   );

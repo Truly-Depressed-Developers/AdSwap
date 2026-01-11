@@ -18,16 +18,16 @@ export function ViewToggle() {
 
   return (
     <Tabs
-      className="w-full"
+      className="w-full h-12"
       value={currentTab}
       onValueChange={(value) => {
         changeCurrentTab(value);
         router.push(`/offers/${value}/${query}`);
       }}
     >
-      <TabsList className="w-full flex">
-        <TabsTrigger value="list">Lista</TabsTrigger>
-        <TabsTrigger value="map">Mapa</TabsTrigger>
+      <TabsList className="w-full flex h-12!">
+        <TabsTrigger value="list" className='rounded-4xl'>Lista</TabsTrigger>
+        <TabsTrigger value="map" className='rounded-4xl'>Mapa</TabsTrigger>
       </TabsList>
     </Tabs>
   );

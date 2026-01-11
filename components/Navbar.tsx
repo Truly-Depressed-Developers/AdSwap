@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MapTrifoldIcon, NoteIcon, ChatCircleDotsIcon, UserIcon } from '@phosphor-icons/react';
+import { MapTrifoldIcon, NoteIcon, ChatCircleDotsIcon, UserIcon, HeartIcon } from '@phosphor-icons/react';
 import { useNavbar } from '@/hooks/useNavbar';
 
 type NavItem = {
@@ -21,6 +21,11 @@ const navItems: NavItem[] = [
     href: '/my-offers',
     label: 'Moje oferty',
     icon: <NoteIcon size={32} weight='fill' />,
+  },
+  {
+    href: '/match',
+    label: 'Odkrywaj',
+    icon: <HeartIcon size={32} weight='fill' />,
   },
   {
     href: '/chats',
@@ -48,14 +53,14 @@ export function Navbar() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 border-t bg-background md:hidden">
-      <div className="flex justify-around">
+      <div className="flex justify-around gap-1">
         {navItems.map((item) => {
           const active = isActive(item.href);
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-1 flex-col items-center justify-center gap-1 py-3 transition-colors ${
+              className={`min-w-fit flex flex-1 flex-col items-center justify-center gap-1 py-3 transition-colors ${
                 active ? 'text-primary' : 'text-ring hover:text-foreground'
               }`}
             >

@@ -4,6 +4,7 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { DesktopIcon, MoonIcon, SunIcon } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
+import { PageHeader } from '@/components/PageHeader';
 
 export default function ThemePage() {
   const { setTheme, theme } = useTheme();
@@ -18,10 +19,8 @@ export default function ThemePage() {
   }
 
   return (
-    <div className="flex min-h-full flex-col bg-background p-4">
-      <header className="flex h-16 items-center justify-center">
-        <h1 className="text-xl font-semibold">Motyw aplikacji</h1>
-      </header>
+    <div className="flex min-h-full flex-col bg-background p-4 pt-0">
+      <PageHeader title="Motyw aplikacji" />
 
       <main className="flex-1 p-4">
         <div className="flex flex-col gap-4">

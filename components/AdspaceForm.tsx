@@ -235,7 +235,7 @@ function AdspaceFormInner({ types }: { types: AdspaceTypeDTO[] }) {
                   name="pricePerWeek"
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name}>Stawka dzienna</FieldLabel>
+                      <FieldLabel htmlFor={field.name}>Stawka tygodniowa</FieldLabel>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
                           PLN
@@ -258,7 +258,7 @@ function AdspaceFormInner({ types }: { types: AdspaceTypeDTO[] }) {
                         />
                       </div>
                       <FieldDescription>
-                        Cena za dzień dla tej powierzchni reklamowej (opcjonalnie)
+                        Cena za tydzień dla tej powierzchni reklamowej (opcjonalnie)
                       </FieldDescription>
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                     </Field>

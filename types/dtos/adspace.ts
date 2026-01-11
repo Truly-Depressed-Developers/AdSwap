@@ -27,7 +27,7 @@ export type AdspaceTypeDTO = {
   description?: string;
 };
 
-type AdspaceWithType = Prisma.AdspaceGetPayload<{
+export type AdspaceWithType = Prisma.AdspaceGetPayload<{
   include: { type: true };
 }>;
 

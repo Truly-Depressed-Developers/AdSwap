@@ -85,7 +85,7 @@ export default function OfferDetailPage() {
       <div className="flex-1 p-4 space-y-4">
         {/* Title */}
         <div>
-          <h1 className="text-xl font-medium mb-1">{adspace.name}</h1>
+          <h1 className="text-lg font-medium mb-1">{adspace.name}</h1>
           <p className="text-base text-muted-foreground">
             2km stąd • {adspace.business.address.split(',')[0]}
           </p>

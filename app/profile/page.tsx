@@ -11,6 +11,7 @@ import {
 } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { signOut, useSession } from 'next-auth/react';
+import { PageHeader } from '@/components/PageHeader';
 
 export default function ProfilePage() {
   const { data: business } = trpc.business.mine.useQuery();
@@ -45,11 +46,9 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="flex min-h-[calc(100vh-6rem)] flex-col bg-background p-4">
-      <header className="flex h-16 items-center justify-center">
-        <h1 className="text-xl font-semibold">Mój Profil</h1>
-      </header>
-
+    <div className="flex min-h-[calc(100vh-6rem)] flex-col bg-background p-4 pt-0">
+      <PageHeader title="Mój Profil" />
+      
       <main className="flex-1 overflow-y-auto flex flex-col justify-between">
         <div className="flex flex-col gap-2">
           {settingsOptions.map((option, index) => (

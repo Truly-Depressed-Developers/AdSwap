@@ -136,6 +136,18 @@ async function createMessage(
   return message;
 }
 
+async function createRating(businessId: string, userId: string, score: number, comment?: string) {
+  const rating = await prisma.rating.create({
+    data: {
+      businessId,
+      userId,
+      score,
+      comment,
+    },
+  });
+  return rating;
+}
+
 async function main() {
   console.log('Seeding database...\n');
 
@@ -448,6 +460,77 @@ async function main() {
     'Tak, zapraszamy do kontaktu w sprawie szczegółów!',
     false,
   );
+
+  // Create ratings
+  await createRating(
+    business1.id,
+    user2.id,
+    5,
+    'Świetna współpraca! Profesjonalne podejście i terminowość.',
+  );
+  await createRating(business1.id, user3.id, 4, 'Bardzo dobra jakość usług, polecam.');
+  await createRating(business1.id, user4.id, 5, 'Najlepsza agencja reklamowa w Krakowie!');
+
+  await createRating(
+    business2.id,
+    user1.id,
+    3,
+    'Dobra lokalizacja, ale obsługa mogłaby być lepsza.',
+  );
+  await createRating(business2.id, user5.id, 4, 'Szeroki asortyment, konkurencyjne ceny.');
+
+  await createRating(
+    business3.id,
+    user1.id,
+    5,
+    'Przepyszna kawa i miła atmosfera. Bardzo polecam!',
+  );
+  await createRating(business3.id, user2.id, 5, 'Najlepsza kawiarnia w Nowej Hucie.');
+  await createRating(
+    business3.id,
+    user6.id,
+    4,
+    'Przytulne miejsce, idealne na spotkanie ze znajomymi.',
+  );
+
+  await createRating(business4.id, user3.id, 5, 'Niesamowite wystawy, zawsze coś ciekawego.');
+  await createRating(
+    business4.id,
+    user7.id,
+    4,
+    'Dobra galeria z ciekawymi dziełami sztuki współczesnej.',
+  );
+
+  await createRating(
+    business5.id,
+    user2.id,
+    4,
+    'Dobre lokalizacje billboardów, efektywna reklama.',
+  );
+  await createRating(
+    business5.id,
+    user4.id,
+    5,
+    'Doskonała widoczność reklam, bardzo zadowoleni z efektów.',
+  );
+  await createRating(business5.id, user6.id, 4, 'Nowoczesne rozwiązania reklamowe.');
+
+  await createRating(
+    business6.id,
+    user1.id,
+    5,
+    'Pyszne jedzenie w pięknym wnętrzu. Warto odwiedzić!',
+  );
+  await createRating(business6.id, user5.id, 4, 'Tradycyjna polska kuchnia w najlepszym wydaniu.');
+
+  await createRating(business7.id, user3.id, 4, 'Duże centrum z szeroką ofertą sklepów.');
+  await createRating(
+    business7.id,
+    user4.id,
+    3,
+    'Dobre centrum handlowe, ale parkowanie bywa trudne.',
+  );
+  await createRating(business7.id, user5.id, 4, 'Wygodne miejsce na zakupy z całą rodziną.');
 
   console.log('\nSeeding completed!');
 }

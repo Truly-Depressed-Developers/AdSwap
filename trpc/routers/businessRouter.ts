@@ -1,9 +1,37 @@
 import { prisma } from '@/prisma/prisma';
-import { mapBusinessWithAdspacesToDTO } from '@/types/dtos';
+import { mapBusinessWithAdspacesToDTO, mapBusinessToDetailDTO } from '@/types/dtos';
 import { protectedProcedure, publicProcedure, router } from '../init';
 import { z } from 'zod';
 
 export const businessRouter = router({
+  getById: publicProcedure.input(z.object({ id: z.string() })).query(async ({ input }) => {
+    const business = await prisma.business.findUnique({
+      where: { id: input.id },
+      include: {
+        tags: true,
+        owner: true,
+        adspaces: {
+          include: {
+            type: true,
+          },
+        },
+        ratings: {
+          include: {
+            user: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+      },
+    });
+
+    if (!business) {
+      throw new Error('Biznes nie został znaleziony');
+    }
+
+    return mapBusinessToDetailDTO(business);
+  }),
   mine: protectedProcedure.query(async ({ ctx }) => {
     const business = await prisma.business.findFirst({
       where: {

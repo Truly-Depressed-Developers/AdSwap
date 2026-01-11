@@ -1,6 +1,7 @@
 import { Message, Prisma } from '@prisma/client';
 import { AdspaceDTO, mapAdspaceToDTO } from './adspace';
 import { UserDTO, mapUserToDTO } from './user';
+import { BusinessData, BusinessDTO, mapBusinessToDTO } from './business';
 
 export type MessageDTO = {
   id: string;
@@ -23,6 +24,11 @@ export type ChatDTO = {
   } | null;
 };
 
+export type ChatWithMessagesAndContextDTO = ChatDTO & {
+  messages: MessageDTO[];
+  businessContext: BusinessDTO;
+};
+
 type ChatWithRelations = Prisma.ChatGetPayload<{
   include: {
     participants: true;
@@ -43,6 +49,11 @@ type ChatWithRelations = Prisma.ChatGetPayload<{
     };
   };
 }>;
+
+type ChatWithRelationsAndDetails = ChatWithRelations & {
+  messages: Message[];
+  business: BusinessData;
+};
 
 export const mapMessageToDTO = (message: Message): MessageDTO => ({
   id: message.id,
@@ -72,5 +83,18 @@ export const mapChatToDTO = (chat: ChatWithRelations, unreadCount = 0): ChatDTO 
     lastMessage,
     unreadCount,
     businessContext,
+  };
+};
+
+export const mapChatWithMessagesToDTO = (
+  chat: ChatWithRelationsAndDetails,
+): ChatWithMessagesAndContextDTO => {
+  const baseChatDTO = mapChatToDTO(chat);
+  const messagesDTO = chat.messages.map(mapMessageToDTO);
+
+  return {
+    ...baseChatDTO,
+    messages: messagesDTO,
+    businessContext: mapBusinessToDTO(chat.business),
   };
 };
