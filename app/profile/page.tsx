@@ -45,30 +45,29 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="flex min-h-screen flex-col bg-background p-4">
+    <div className="flex min-h-[calc(100vh-6rem)] flex-col bg-background p-4">
       <header className="flex h-16 items-center justify-center">
         <h1 className="text-xl font-bold">Mój Profil</h1>
       </header>
 
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto flex flex-col justify-between">
         <div className="flex flex-col gap-2">
           {settingsOptions.map((option, index) => (
             <SettingsItem key={index} icon={option.icon} label={option.label} href={option.href} />
           ))}
         </div>
 
-        
-      {session && (
-        <div className="mt-4 flex items-center gap-2">
-          Zalogowany użytkownik:
-          <span className="text-sm text-muted-foreground">
-            {session.user.firstName} {session.user.lastName}
-          </span>
-          <Button variant="destructive" size="sm" onClick={() => signOut({ callbackUrl: '/' })}>
-            Logout
-          </Button>
-        </div>
-      )}
+        {session && (
+          <div className="flex items-center gap-2 justify-center flex-col">
+            Zalogowany użytkownik:
+            <span className="text-sm text-muted-foreground">
+              {session.user.firstName} {session.user.lastName}
+            </span>
+            <Button variant="destructive" size="sm" onClick={() => signOut({ callbackUrl: '/' })}>
+              Logout
+            </Button>
+          </div>
+        )}
       </main>
     </div>
   );
