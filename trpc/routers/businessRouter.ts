@@ -39,6 +39,49 @@ export const businessRouter = router({
 
     return businesses.map(mapBusinessWithAdspacesToDTO);
   }),
+  create: protectedProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        address: z.string(),
+        description: z.string(),
+        nip: z.string(),
+        pkd: z.string(),
+        tags: z.array(z.string()),
+        latitude: z.number(),
+        longitude: z.number(),
+        website: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const business = await prisma.business.create({
+        data: {
+          name: input.name,
+          address: input.address,
+          description: input.description,
+          nip: input.nip,
+          pkd: input.pkd,
+          tags: {
+            connect: input.tags.map((tag) => ({ id: tag })),
+          },
+          latitude: input.latitude,
+          longitude: input.longitude,
+          website: input.website,
+          ownerId: ctx.user.id,
+        },
+        include: {
+          tags: true,
+          adspaces: {
+            include: {
+              type: true,
+            },
+          },
+          owner: true,
+        },
+      });
+
+      return mapBusinessWithAdspacesToDTO(business);
+    }),
 
   geocode: publicProcedure.input(z.object({ address: z.string() })).query(async ({ input }) => {
     try {
