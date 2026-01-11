@@ -8,7 +8,7 @@ import { Input } from '../ui/input';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '../ui/input-group';
 import { FadersHorizontalIcon, XIcon } from '@phosphor-icons/react';
 
-type SearchBarProps = {
+type Props = {
   filters: FilterState;
   onFilterChange: <K extends keyof FilterState>(key: K, value: FilterState[K]) => void;
   onClear: () => void;
@@ -22,7 +22,7 @@ export function SearchBar({
   onClear,
   activeFiltersCount,
   className = '',
-}: SearchBarProps) {
+}: Props) {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [searchValue, setSearchValue] = useState(filters.search);
 
@@ -52,7 +52,7 @@ export function SearchBar({
               placeholder="Szukaj..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              className='h-12'
+              className="h-12"
             />
 
             {searchValue && (

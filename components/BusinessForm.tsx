@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm, useWatch } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import z from 'zod';
 import { Field, FieldDescription, FieldError, FieldLabel } from './ui/field';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { trpc } from '@/trpc/client';
-import { TagDTO } from '@/types/dtos';
+import { BusinessDetailDTO, TagDTO } from '@/types/dtos';
+import { toast } from 'sonner';
 import {
   Combobox,
   ComboboxChips,
@@ -46,13 +48,22 @@ const businessFormSchema = z.object({
   longitude: z.number({
     message: 'Podaj lokalizację',
   }),
-  website: z.url('Podaj poprawny adres URL strony').optional(),
+  website: z
+    .string()
+    .url('Podaj poprawny adres URL strony')
+    .or(z.literal(''))
+    .transform((v) => (v === '' ? undefined : v))
+    .optional(),
   tags: z.array(z.string()).min(1, 'Wybierz co najmniej jeden tag'),
 });
 
 type BusinessFormValues = z.infer<typeof businessFormSchema>;
 
-export default function BusinessForm() {
+type BusinessFormProps = {
+  initialData?: BusinessDetailDTO;
+};
+
+export default function BusinessForm({ initialData }: BusinessFormProps) {
   const { data: tags, isPending, isError } = trpc.tag.list.useQuery();
 
   if (isPending) {
@@ -63,30 +74,34 @@ export default function BusinessForm() {
     return <div>Błąd podczas ładowania tagów</div>;
   }
 
-  return <BusinessFormInner tags={tags || []} />;
+  return <BusinessFormInner tags={tags || []} initialData={initialData} />;
 }
 
 type Props = {
   tags: TagDTO[];
+  initialData?: BusinessDetailDTO;
 };
 
-function BusinessFormInner({ tags }: Props) {
+function BusinessFormInner({ tags, initialData }: Props) {
   const [isGeocoding, setIsGeocoding] = useState(false);
+  const router = useRouter();
 
   const createBusiness = trpc.business.create.useMutation();
+  const updateBusiness = trpc.business.update.useMutation();
 
   const form = useForm<BusinessFormValues>({
     resolver: zodResolver(businessFormSchema),
     defaultValues: {
-      name: '',
-      address: '',
-      description: '',
-      targetAudience: '',
-      nip: '',
-      pkd: '',
-      tags: [],
-      latitude: undefined,
-      longitude: undefined,
+      name: initialData?.name || '',
+      address: initialData?.address || '',
+      description: initialData?.description || '',
+      targetAudience: initialData?.targetAudience || '',
+      nip: initialData?.nip || '',
+      pkd: initialData?.pkd || '',
+      tags: initialData?.tags.map((t) => t.id) || [],
+      latitude: initialData?.coords.latitude,
+      longitude: initialData?.coords.longitude,
+      website: initialData?.website || '',
     },
   });
 
@@ -124,9 +139,20 @@ function BusinessFormInner({ tags }: Props) {
 
   const onSubmit = async (data: BusinessFormValues) => {
     try {
-      await createBusiness.mutateAsync(data);
+      if (initialData) {
+        await updateBusiness.mutateAsync({
+          id: initialData.id,
+          ...data,
+        });
+        toast.success('Biznes został zaktualizowany pomyślnie!');
+      } else {
+        await createBusiness.mutateAsync(data);
+        toast.success('Biznes został utworzony pomyślnie!');
+      }
+      router.push('/profile/business');
     } catch (error) {
-      console.error('Błąd podczas tworzenia biznesu:', error);
+      console.error('Błąd podczas zapisywania biznesu:', error);
+      toast.error('Wystąpił błąd podczas zapisywania danych.');
     }
   };
 
@@ -217,7 +243,7 @@ function BusinessFormInner({ tags }: Props) {
                 <Drawer.Overlay className="fixed inset-0 bg-black/40 z-50" />
                 <Drawer.Content className="bg-bg flex flex-col rounded-t-[10px] h-[70vh] fixed bottom-0 left-0 right-0 z-50">
                   <div className="p-4 bg-bg rounded-t-[10px] flex-1 overflow-y-auto">
-                    <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted mb-8" />
+                    <div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-muted mb-8" />
                     <div className="max-w-md mx-auto">
                       <Drawer.Title className="font-medium mb-4 text-center">
                         Wybierz lokalizację
@@ -377,8 +403,13 @@ function BusinessFormInner({ tags }: Props) {
       </div>
 
       <div className="pt-4">
-        <Button type="submit" size="lg" className="w-full sm:w-auto">
-          Utwórz profil biznesowy
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full sm:w-auto"
+          disabled={createBusiness.isPending || updateBusiness.isPending}
+        >
+          {initialData ? 'Zapisz zmiany' : 'Utwórz profil biznesowy'}
         </Button>
       </div>
     </form>

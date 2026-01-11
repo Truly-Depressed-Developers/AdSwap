@@ -87,6 +87,7 @@ export const businessRouter = router({
         latitude: z.number(),
         longitude: z.number(),
         website: z.string().optional(),
+        targetAudience: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -97,6 +98,7 @@ export const businessRouter = router({
           description: input.description,
           nip: input.nip,
           pkd: input.pkd,
+          targetAudience: input.targetAudience,
           tags: {
             connect: input.tags.map((tag) => ({ id: tag })),
           },
@@ -152,4 +154,64 @@ export const businessRouter = router({
       return [];
     }
   }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        address: z.string(),
+        description: z.string(),
+        nip: z.string(),
+        pkd: z.string(),
+        tags: z.array(z.string()),
+        latitude: z.number(),
+        longitude: z.number(),
+        website: z.string().optional(),
+        targetAudience: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const existingBusiness = await prisma.business.findUnique({
+        where: { id: input.id },
+        select: { ownerId: true },
+      });
+
+      if (!existingBusiness) {
+        throw new Error('Biznes nie został znaleziony');
+      }
+
+      if (existingBusiness.ownerId !== ctx.user.id) {
+        throw new Error('Nie masz uprawnień do edycji tego biznesu');
+      }
+
+      const business = await prisma.business.update({
+        where: { id: input.id },
+        data: {
+          name: input.name,
+          address: input.address,
+          description: input.description,
+          nip: input.nip,
+          pkd: input.pkd,
+          targetAudience: input.targetAudience,
+          tags: {
+            set: input.tags.map((tag) => ({ id: tag })),
+          },
+          latitude: input.latitude,
+          longitude: input.longitude,
+          website: input.website,
+        },
+        include: {
+          tags: true,
+          adspaces: {
+            include: {
+              type: true,
+            },
+          },
+          owner: true,
+        },
+      });
+
+      return mapBusinessWithAdspacesToDTO(business);
+    }),
 });

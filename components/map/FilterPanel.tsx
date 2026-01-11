@@ -5,21 +5,27 @@ import { Button } from '@/components/ui/button';
 import { trpc } from '@/trpc/client';
 import type { FilterState } from '../../hooks/useAdspaceFilters';
 
-type FilterPanelProps = {
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+type Props = {
   filters: FilterState;
   onFilterChange: <K extends keyof FilterState>(key: K, value: FilterState[K]) => void;
   onClear: () => void;
   onClose: () => void;
 };
 
-export function FilterPanel({ filters, onFilterChange, onClear, onClose }: FilterPanelProps) {
+export function FilterPanel({ filters, onFilterChange, onClear, onClose }: Props) {
   const { data: adspaceTypes } = trpc.adspace.types.useQuery();
 
   const content = (
     <>
-      {/* Backdrop */}
       <div className="fixed inset-0 z-1001 bg-black/20" onClick={onClose} />
-      {/* Panel */}
       <div className="fixed inset-0 z-1002 bg-background p-4 shadow-lg overflow-auto">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="font-semibold">Filtry</h3>
@@ -28,39 +34,47 @@ export function FilterPanel({ filters, onFilterChange, onClear, onClose }: Filte
           </Button>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium">Typ powierzchni</label>
-            <select
-              className="rounded-md border bg-background px-3 py-2 text-sm"
-              value={filters.typeId || ''}
-              onChange={(e) => onFilterChange('typeId', e.target.value || null)}
+            <Select
+              value={filters.typeId || 'all'}
+              onValueChange={(value) => onFilterChange('typeId', value === 'all' ? null : value)}
             >
-              <option value="">Wszystkie typy</option>
-              {adspaceTypes?.map((type) => (
-                <option key={type.id} value={type.id}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Wszystkie typy" />
+              </SelectTrigger>
+              <SelectContent position="popper" sideOffset={4}>
+                <SelectItem value="all">Wszystkie typy</SelectItem>
+                {adspaceTypes?.map((type) => (
+                  <SelectItem key={type.id} value={type.id}>
+                    {type.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium">Dostępność</label>
-            <select
-              className="rounded-md border bg-background px-3 py-2 text-sm"
+            <Select
               value={filters.availability}
-              onChange={(e) =>
-                onFilterChange('availability', e.target.value as FilterState['availability'])
+              onValueChange={(value) =>
+                onFilterChange('availability', value as FilterState['availability'])
               }
             >
-              <option value="all">Wszystkie</option>
-              <option value="available">Dostępne</option>
-              <option value="in_use">Zajęte</option>
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Wszystkie" />
+              </SelectTrigger>
+              <SelectContent position="popper" sideOffset={4}>
+                <SelectItem value="all">Wszystkie</SelectItem>
+                <SelectItem value="available">Dostępne</SelectItem>
+                <SelectItem value="in_use">Zajęte</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
-          <Button variant="outline" size="sm" onClick={onClear}>
+          <Button variant="outline" size="sm" onClick={onClear} className="mt-4">
             Wyczyść filtry
           </Button>
         </div>
