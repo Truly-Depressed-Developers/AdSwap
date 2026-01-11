@@ -115,12 +115,18 @@ async function createChat(userAId: string, userBId: string, adspaceIds: string[]
   return chat;
 }
 
-async function createMessage(chatId: string, senderId: string, content: string) {
+async function createMessage(
+  chatId: string,
+  senderId: string,
+  content: string,
+  isRead: boolean = false,
+) {
   const message = await prisma.message.create({
     data: {
       chatId,
       senderId,
       content,
+      isRead,
     },
   });
   return message;
@@ -405,27 +411,27 @@ async function main() {
     chat1.id,
     user1.id,
     'Cześć! Czy jesteś zainteresowany reklamą na naszym billboardzie?',
+    true,
   );
-  await createMessage(
-    chat1.id,
-    user2.id,
-    'Tak, bardzo! Jakie są warunki?',
-  );
+  await createMessage(chat1.id, user2.id, 'Tak, bardzo! Jakie są warunki?', true);
   await createMessage(
     chat1.id,
     user1.id,
     'Oferujemy 750 zł za tydzień lub możliwość barteru.',
+    false,
   );
 
   await createMessage(
     chat2.id,
     user3.id,
     'Widziałem waszą ofertę witryny. Czy jest jeszcze dostępna?',
+    true,
   );
   await createMessage(
     chat2.id,
     user5.id,
     'Tak, zapraszamy do kontaktu w sprawie szczegółów!',
+    false,
   );
 
   console.log('\nSeeding completed!');
