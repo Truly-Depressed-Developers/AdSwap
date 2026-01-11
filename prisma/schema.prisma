@@ -19,6 +19,7 @@ model User {
   messages   Message[]  @relation("UserMessages")
   chats      Chat[]
   businesses Business[]
+  swipes     Swipe[]    @relation("UserSwipes")
 }
 
 model Session {
@@ -46,9 +47,10 @@ model Business {
   createdAt      DateTime @default(now())
   ownerId        String
 
-  adspaces Adspace[]
-  tags     Tag[]
-  owner    User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  adspaces       Adspace[]
+  tags           Tag[]
+  owner          User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  swipesReceived Swipe[]   @relation("BusinessSwipes")
 }
 
 model Tag {
@@ -109,4 +111,19 @@ model Message {
 
   @@index([chatId])
   @@index([senderId])
+}
+
+model Swipe {
+  id               String   @id @default(cuid())
+  swiperId         String
+  targetBusinessId String
+  direction        String
+  createdAt        DateTime @default(now())
+
+  swiper         User     @relation("UserSwipes", fields: [swiperId], references: [id], onDelete: Cascade)
+  targetBusiness Business @relation("BusinessSwipes", fields: [targetBusinessId], references: [id], onDelete: Cascade)
+
+  @@unique([swiperId, targetBusinessId])
+  @@index([swiperId])
+  @@index([targetBusinessId])
 }

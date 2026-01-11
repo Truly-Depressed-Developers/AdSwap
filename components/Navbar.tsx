@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MapTrifoldIcon, NoteIcon, ChatCircleDotsIcon, UserIcon } from '@phosphor-icons/react';
+import { MapTrifoldIcon, NoteIcon, ChatCircleDotsIcon, UserIcon, Heart } from '@phosphor-icons/react';
 import { useNavbar } from '@/hooks/useNavbar';
 
 type NavItem = {
@@ -21,6 +21,11 @@ const navItems: NavItem[] = [
     href: '/my-offers',
     label: 'Moje oferty',
     icon: <NoteIcon size={32} weight='fill' />,
+  },
+  {
+    href: '/match',
+    label: 'Odkrywaj',
+    icon: <Heart size={24} />,
   },
   {
     href: '/chats',
