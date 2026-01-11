@@ -49,7 +49,7 @@ export default function ProfilePage() {
     <div className="flex flex-col min-h-dvh bg-background">
       <PageHeader title="Mój Profil" />
 
-      <main className="flex-1 overflow-y-auto p-4 flex flex-col justify-between">
+      <main className="flex-1 overflow-y-auto p-4 flex flex-col gap-16">
         <div className="flex flex-col gap-2">
           {settingsOptions.map((option, index) => (
             <SettingsItem key={index} icon={option.icon} label={option.label} href={option.href} />
