@@ -71,7 +71,7 @@ export function SignInForm() {
                     {...field}
                     id={field.name}
                     type="email"
-                    placeholder="jan@example.com"
+                    placeholder="jan@mail.com"
                     aria-invalid={fieldState.invalid}
                   />
                   <FieldError>{fieldState.error?.message}</FieldError>
@@ -89,7 +89,7 @@ export function SignInForm() {
                     {...field}
                     id={field.name}
                     type="password"
-                    placeholder="••••••••"
+                    placeholder="password123"
                     aria-invalid={fieldState.invalid}
                   />
                   <FieldDescription>Wpisz hasło użyte podczas rejestracji</FieldDescription>
