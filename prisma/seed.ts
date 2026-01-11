@@ -47,6 +47,7 @@ async function createBusiness(
   longitude: number,
   ownerId: string,
   tagIds: string[],
+  logoUrl?: string
 ) {
   const business = await prisma.business.create({
     data: {
@@ -59,6 +60,7 @@ async function createBusiness(
       latitude,
       longitude,
       ownerId,
+      logoUrl,
       tags: {
         connect: tagIds.map((id) => ({ id })),
       },
@@ -172,21 +174,22 @@ async function main() {
 
   // Create 7 Krakow businesses
   const business1 = await createBusiness(
-    'Reklamy Kraków Sp. z o.o.',
-    'Profesjonalna agencja reklamowa z wieloletnim doświadczeniem na rynku krakowskim',
+    'Matcha 24/7',
+    'Urokliwe miejsce z wieloletnim doświadczeniem',
     'Rynek Główny 1, 31-042 Kraków',
     '1234567890',
     '73.11.Z',
-    'Firmy i przedsiębiorcy 25-55 lat',
+    'Młodzi dorośli 18-30 lat',
     50.0619,
     19.9372,
     user1.id,
-    [tagReklama.id, tagMarketing.id],
+    [tagKawiarnia.id, tagRestauracja.id],
+    '/logo_1.png'
   );
 
   const business2 = await createBusiness(
-    'Sklep Kazimierz',
-    'Sklep wielobranżowy',
+    'Green Leaf Cafe',
+    'Kawiarnia',
     'ul. Szeroka 15, 31-053 Kraków',
     '9876543210',
     '47.19.Z',
@@ -194,20 +197,22 @@ async function main() {
     50.0515,
     19.9465,
     user2.id,
-    [tagHandel.id],
+    [tagKawiarnia.id],
+    '/logo_2.png'
   );
 
   const business3 = await createBusiness(
-    'Kawiarnia Nowa Huta',
-    'Klimatyczna kawiarnia w sercu Nowej Huty. Oferujemy najlepszą kawę w okolicy oraz domowe ciasta.',
+    'Wild House',
+    'Sklep oferujący rośliny do domu',
     'os. Centrum A 1, 31-929 Kraków',
     '5551234567',
     '56.10.A',
-    'Studenci i młodzi profesjonaliści 20-35 lat',
+    'Dorośli 30-60 lat',
     50.0726,
     20.0373,
     user3.id,
-    [tagKawiarnia.id],
+    [tagHandel.id],
+    '/logo_3.png'
   );
 
   const business4 = await createBusiness(
@@ -268,57 +273,58 @@ async function main() {
   const typeBanner = await createAdspaceType('Baner', 'Banner advertisement');
   const typePoster = await createAdspaceType('Plakat', 'Poster space');
   const typeDigital = await createAdspaceType('Ekran LED', 'Digital LED screen');
+  const typeFlyer = await createAdspaceType('Ulotka', 'Flyer');
 
   // Create 12 varied adspaces with different parameter combinations
   // Adspace 1: Billboard, barter + price
   const adspace1 = await createAdspace(
     business1.id,
-    typeBillboard.id,
-    'Billboard Rynek Główny',
-    'Duży billboard w samym centrum Krakowa, doskonała widoczność z głównego placu',
-    600,
-    300,
-    'https://placehold.co/600x300',
+    typeFlyer.id,
+    'Ulotki przy ladzie',
+    'Oferuję eksponowane miejsce na Twoje ulotki w samym sercu lokalu – tuż przy kasie, gdzie finalizujemy każde zamówienie. To strefa o najwyższym skupieniu uwagi klientów.',
+    9.9,
+    21,
+    '/offer_1.png',
     true,
-    750,
+    80,
   );
 
   // Adspace 2: Window, no barter, with price
   const adspace2 = await createAdspace(
     business2.id,
     typeWindow.id,
-    'Witryna Kazimierz',
-    'Przestrzeń reklamowa w witrynie sklepu na ul. Szerokiej',
+    'Witryna w oknie',
+    'Twoja reklama na pierwszej linii frontu! Udostępniam przestrzeń w głównej witrynie lokalu, wychodzącej bezpośrednio na ruchliwą ulicę. To nasz magnes na klientów.',
     200,
     150,
-    'https://placehold.co/200x150',
-    false,
-    200,
+    '/offer_2.png',
+    true,
+    95,
   );
 
   // Adspace 3: Banner, barter only (no price)
   await createAdspace(
     business3.id,
-    typeBanner.id,
-    'Baner przy wejściu',
-    'Baner reklamowy przy głównym wejściu do kawiarni',
-    300,
-    80,
-    'https://placehold.co/300x80',
+    typePoster.id,
+    'Plakat A2 (42cm x  59,4cm)',
+    'dostępniam eksponowane miejsce na ścianie pod plakat w formacie A2 (42x59,4 cm). To nie jest zwykła tablica ogłoszeniowa – oferuję solową przestrzeń na czystej, białej ścianie w głównej sali.',
+    42,
+    59.4,
+    '/offer_3.png',
     true,
   );
 
   // Adspace 4: Poster, no barter, with price
   await createAdspace(
-    business4.id,
-    typePoster.id,
-    'Plakat w galerii',
-    'Miejsce na plakat artystyczny w holu galerii',
-    70,
-    100,
-    'https://placehold.co/70x100',
+    business1.id,
+    typeFlyer.id,
+    'Ulotki przy ladzie',
+    'Oferuję eksponowane miejsce na Twoje ulotki w samym sercu lokalu – tuż przy kasie, gdzie finalizujemy każde zamówienie. To strefa o najwyższym skupieniu uwagi klientów.',
+    9.9,
+    21,
+    '/offer_1.png',
     false,
-    80,
+    65,
   );
 
   // Adspace 5: Billboard, barter + price (high price)

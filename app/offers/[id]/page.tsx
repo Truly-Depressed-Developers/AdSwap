@@ -92,7 +92,9 @@ export default function OfferDetailPage() {
         </div>
 
         {/* Description */}
-        {adspace.description && <p className="text-base leading-relaxed">{adspace.description}</p>}
+        {adspace.description && (
+          <p className="text-base text-justify text-gray-800 leading-relaxed">{adspace.description}</p>
+        )}
 
         {/* Badges and price row */}
         <div className="flex items-center justify-between">
@@ -153,9 +155,9 @@ export default function OfferDetailPage() {
           className="flex items-center gap-3 py-2 hover:bg-muted/50 rounded-lg transition-colors -mx-2 px-2"
         >
           <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-muted">
-            {adspace.business.imageUrl ? (
+            {adspace.business.logoUrl ? (
               <Image
-                src={adspace.business.imageUrl}
+                src={adspace.business.logoUrl}
                 alt={adspace.business.name}
                 fill
                 className="object-cover"
