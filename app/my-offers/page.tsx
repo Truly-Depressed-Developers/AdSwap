@@ -1,10 +1,108 @@
+'use client';
+
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useMemo } from 'react';
+import { Button } from '@/components/ui/button';
+import { useAdspaceFilters } from '@/hooks/useAdspaceFilters';
+import { filterAdspaces } from '@/lib/filterAdspaces';
+import { trpc } from '@/trpc/client';
+import { SearchBar } from '@/components/map/SearchBar';
+import { AdspaceCard } from '@/components/map/AdspaceCard';
 
 export default function MyOffers() {
+  const { data: session, status } = useSession();
+  const { filters, updateFilter, clearFilters, activeFiltersCount } = useAdspaceFilters();
+  const { data: adspaces, isLoading: adspacesLoading } = trpc.adspace.myList.useQuery(undefined, {
+    enabled: status === 'authenticated',
+  });
+
+  const filteredAdspaces = useMemo(
+    () => filterAdspaces(adspaces ?? [], filters),
+    [adspaces, filters],
+  );
+
+  // Loading session
+  if (status === 'loading') {
+    return (
+      <div className="flex h-dvh w-full items-center justify-center bg-background">
+        <span className="text-muted-foreground">Ładowanie...</span>
+      </div>
+    );
+  }
+
+  // Not logged in
+  if (status === 'unauthenticated') {
+    return (
+      <div className="flex h-dvh w-full flex-col items-center justify-center gap-4 bg-background">
+        <p className="text-lg font-medium">Musisz być zalogowany</p>
+        <p className="text-sm text-muted-foreground">Zaloguj się, aby zobaczyć swoje ogłoszenia</p>
+        <Link href="/auth/signin">
+          <Button>Zaloguj się</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  // Loading adspaces
+  if (adspacesLoading) {
+    return (
+      <div className="flex h-dvh w-full items-center justify-center bg-background">
+        <span className="text-muted-foreground">Ładowanie ogłoszeń...</span>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <h1>Moje ogłoszenia</h1>
-      <Link href="/my-offers/create-offer">Dodaj nowe ogłoszenie</Link>
+    <div className="flex h-dvh w-full flex-col bg-background">
+      {/* Fixed header with search */}
+      <div className="shrink-0 border-b bg-background px-4 py-4">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-xl font-semibold">Moje ogłoszenia</h1>
+          <Link href="/my-offers/create-offer">
+            <Button size="sm">Dodaj ogłoszenie</Button>
+          </Link>
+        </div>
+        <SearchBar
+          filters={filters}
+          onFilterChange={updateFilter}
+          onClear={clearFilters}
+          activeFiltersCount={activeFiltersCount}
+        />
+      </div>
+
+      {/* Scrollable items */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="flex flex-col gap-3 p-4">
+          {filteredAdspaces.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              {adspaces?.length === 0 ? (
+                <>
+                  <p className="text-lg font-medium">Nie masz jeszcze ogłoszeń</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Dodaj swoje pierwsze ogłoszenie
+                  </p>
+                  <Link href="/my-offers/create-offer">
+                    <Button className="mt-4">Dodaj ogłoszenie</Button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <p className="text-lg font-medium">Brak wyników</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Spróbuj zmienić filtry wyszukiwania
+                  </p>
+                  <Button variant="outline" size="sm" className="mt-4" onClick={clearFilters}>
+                    Wyczyść filtry
+                  </Button>
+                </>
+              )}
+            </div>
+          ) : (
+            filteredAdspaces.map((adspace) => <AdspaceCard key={adspace.id} adspace={adspace} />)
+          )}
+        </div>
+      </div>
     </div>
   );
 }

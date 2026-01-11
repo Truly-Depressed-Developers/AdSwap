@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
@@ -56,6 +57,7 @@ export default function AdspaceForm() {
 }
 
 function AdspaceFormInner({ types }: { types: AdspaceTypeDTO[] }) {
+  const router = useRouter();
   const { mutateAsync: createAdspace } = trpc.adspace.create.useMutation();
 
   const typeIds = useMemo(() => types.map((t) => t.id) as [string, ...string[]], [types]);
@@ -76,6 +78,7 @@ function AdspaceFormInner({ types }: { types: AdspaceTypeDTO[] }) {
   const onSubmit = async (data: z.infer<typeof schema>) => {
     try {
       await createAdspace(data);
+      router.push('/my-offers');
     } catch (error) {
       console.error('Błąd podczas tworzenia powierzchni reklamowej:', error);
     }

@@ -13,6 +13,7 @@ export type BusinessDTO = {
   pkd: string;
   imageUrl?: string;
   logoUrl?: string;
+  targetAudience: string;
   tags: TagDTO[];
   coords: Coordinates;
   owner: UserDTO;
@@ -52,6 +53,7 @@ export const mapBusinessToDTO = (business: BusinessData): BusinessDTO => ({
   pkd: business.pkd,
   imageUrl: business.imageUrl ?? undefined,
   logoUrl: business.logoUrl ?? undefined,
+  targetAudience: business.targetAudience,
   tags: business.tags.map(mapTagToDTO),
   coords: {
     latitude: business.latitude,

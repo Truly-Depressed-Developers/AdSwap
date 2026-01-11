@@ -31,19 +31,20 @@ model Session {
 }
 
 model Business {
-  id          String   @id @default(cuid())
-  name        String
-  description String
-  address     String
-  website     String?
-  nip         String
-  pkd         String
-  imageUrl    String?
-  logoUrl     String?
-  latitude    Float
-  longitude   Float
-  createdAt   DateTime @default(now())
-  ownerId     String
+  id             String   @id @default(cuid())
+  name           String
+  description    String
+  address        String
+  website        String?
+  nip            String
+  pkd            String
+  imageUrl       String?
+  logoUrl        String?
+  targetAudience String   @default("")
+  latitude       Float
+  longitude      Float
+  createdAt      DateTime @default(now())
+  ownerId        String
 
   adspaces Adspace[]
   tags     Tag[]

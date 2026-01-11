@@ -19,11 +19,53 @@ export const adspaceRouter = router({
 
     return adspaces.map(mapAdspaceWithBusinessToDTO);
   }),
+  myList: protectedProcedure.query(async ({ ctx }) => {
+    const adspaces = await prisma.adspace.findMany({
+      where: {
+        business: {
+          ownerId: ctx.user.id,
+        },
+      },
+      include: {
+        type: true,
+        business: {
+          include: {
+            tags: true,
+            owner: true,
+          },
+        },
+      },
+    });
+
+    return adspaces.map(mapAdspaceWithBusinessToDTO);
+  }),
   types: publicProcedure.query(async () => {
     const types = await prisma.adspaceType.findMany();
 
     return types.map(mapAdspaceTypeToDTO);
   }),
+  getById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {
+      const adspace = await prisma.adspace.findUnique({
+        where: { id: input.id },
+        include: {
+          type: true,
+          business: {
+            include: {
+              tags: true,
+              owner: true,
+            },
+          },
+        },
+      });
+
+      if (!adspace) {
+        return null;
+      }
+
+      return mapAdspaceWithBusinessToDTO(adspace);
+    }),
   create: protectedProcedure
     .input(
       z.object({
@@ -57,16 +99,16 @@ export const adspaceRouter = router({
               id: input.type,
             },
           },
-          imageUrl: '', // TODO
+          imageUrl: 'https://placehold.co/96x128', // TODO
           maxWidth: input.maxWidth,
           maxHeight: input.maxHeight,
           isBarterAvailable: input.isBarterAvailable,
           pricePerWeek: input.pricePerWeek,
           business: {
             connect: {
-              id: ctx.user.id,
-            },
-          },
+              id: userBusiness.id
+            }
+          }
         },
       });
 

@@ -38,6 +38,7 @@ const businessFormSchema = z.object({
   name: z.string().min(3, 'Nazwa musi mieć co najmniej 3 znaki'),
   address: z.string().min(5, 'Adres musi mieć co najmniej 5 znaków'),
   description: z.string().min(10, 'Opis musi mieć co najmniej 10 znaków'),
+  targetAudience: z.string().min(5, 'Grupa docelowa musi mieć co najmniej 5 znaków'),
   pkd: z.string().min(2, 'Podaj kod PKD'),
   latitude: z.number({
     message: 'Podaj lokalizację',
@@ -80,6 +81,7 @@ function BusinessFormInner({ tags }: Props) {
       name: '',
       address: '',
       description: '',
+      targetAudience: '',
       nip: '',
       pkd: '',
       tags: [],
@@ -268,6 +270,24 @@ function BusinessFormInner({ tags }: Props) {
                   aria-invalid={fieldState.invalid}
                 />
                 <FieldDescription>Opisz czym zajmuje się Twój biznes</FieldDescription>
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+
+          <Controller
+            control={form.control}
+            name="targetAudience"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Grupa docelowa</FieldLabel>
+                <Input
+                  {...field}
+                  id={field.name}
+                  placeholder="np. Kobiety 20-40 lat, Studenci, Rodziny z dziećmi"
+                  aria-invalid={fieldState.invalid}
+                />
+                <FieldDescription>Opisz kto jest głównym odbiorcą Twoich usług</FieldDescription>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
