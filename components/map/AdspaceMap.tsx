@@ -42,7 +42,7 @@ export function AdspaceMap() {
 
   const filteredAdspaces = useMemo(
     () => filterAdspaces(adspaces ?? [], filters),
-    [adspaces, filters]
+    [adspaces, filters],
   );
 
   if (!mounted || isLoading) {
@@ -100,7 +100,7 @@ export function AdspaceMap() {
                     <span className="text-xs text-muted-foreground mt-1 mb-2">
                       2km stąd • {adspace.business.address.split(',')[0]}
                     </span>
-                    <Link href={`/oferty/${adspace.id}`} className="w-full">
+                    <Link href={`/offers/${adspace.id}`} className="w-full">
                       <Button className="w-full bg-chart-4 text-foreground" size="sm">
                         Zobacz oferty
                       </Button>

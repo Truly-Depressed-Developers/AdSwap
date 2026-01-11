@@ -415,27 +415,15 @@ async function main() {
     user1.id,
     'Cześć! Czy jesteś zainteresowany reklamą na naszym billboardzie?',
   );
-  await createMessage(
-    chat1.id,
-    user2.id,
-    'Tak, bardzo! Jakie są warunki?',
-  );
-  await createMessage(
-    chat1.id,
-    user1.id,
-    'Oferujemy 750 zł za tydzień lub możliwość barteru.',
-  );
+  await createMessage(chat1.id, user2.id, 'Tak, bardzo! Jakie są warunki?');
+  await createMessage(chat1.id, user1.id, 'Oferujemy 750 zł za tydzień lub możliwość barteru.');
 
   await createMessage(
     chat2.id,
     user3.id,
     'Widziałem waszą ofertę witryny. Czy jest jeszcze dostępna?',
   );
-  await createMessage(
-    chat2.id,
-    user5.id,
-    'Tak, zapraszamy do kontaktu w sprawie szczegółów!',
-  );
+  await createMessage(chat2.id, user5.id, 'Tak, zapraszamy do kontaktu w sprawie szczegółów!');
 
   console.log('\nSeeding completed!');
 }

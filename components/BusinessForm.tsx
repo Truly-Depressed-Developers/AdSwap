@@ -72,6 +72,9 @@ type Props = {
 
 function BusinessFormInner({ tags }: Props) {
   const [isGeocoding, setIsGeocoding] = useState(false);
+
+  const createBusiness = trpc.business.create.useMutation();
+
   const form = useForm<BusinessFormValues>({
     resolver: zodResolver(businessFormSchema),
     defaultValues: {
@@ -121,8 +124,7 @@ function BusinessFormInner({ tags }: Props) {
 
   const onSubmit = async (data: BusinessFormValues) => {
     try {
-      console.log('Business Form Data:', data);
-      // await createBusiness(data);
+      await createBusiness.mutateAsync(data);
     } catch (error) {
       console.error('Błąd podczas tworzenia biznesu:', error);
     }

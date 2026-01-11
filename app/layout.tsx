@@ -2,8 +2,11 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Roboto } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/providers/Providers';
+import { Navbar } from '@/components/Navbar';
+import { NavbarProvider } from '@/hooks/useNavbar';
+import { NavbarSpacer } from '@/components/NavbarSpacer';
 
-const roboto = Roboto({ subsets: ['latin'], variable: '--font-sans' });
+const roboto = Roboto({ subsets: ['latin'], variable: '--font-sans', weight: ['400', '500', '700'] });
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,7 +32,13 @@ export default function RootLayout({
     <html lang="en" className={roboto.variable}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
-          <main>{children}</main>
+          <NavbarProvider>
+            <main>
+              {children}
+              <Navbar />
+              <NavbarSpacer />
+            </main>
+          </NavbarProvider>
         </Providers>
       </body>
     </html>

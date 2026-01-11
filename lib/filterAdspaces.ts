@@ -2,7 +2,7 @@ import type { AdspacesWithBusinessDTO } from '@/types/dtos/adspace';
 
 export function filterAdspaces(
   adspaces: AdspacesWithBusinessDTO[],
-  filters: { search: string; typeId: string | null; availability: 'all' | 'available' | 'in_use' }
+  filters: { search: string; typeId: string | null; availability: 'all' | 'available' | 'in_use' },
 ) {
   return adspaces.filter((adspace) => {
     // Search filter - matches business name or adspace name

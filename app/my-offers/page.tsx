@@ -19,7 +19,7 @@ export default function MyOffers() {
 
   const filteredAdspaces = useMemo(
     () => filterAdspaces(adspaces ?? [], filters),
-    [adspaces, filters]
+    [adspaces, filters],
   );
 
   // Loading session
@@ -36,9 +36,7 @@ export default function MyOffers() {
     return (
       <div className="flex h-dvh w-full flex-col items-center justify-center gap-4 bg-background">
         <p className="text-lg font-medium">Musisz być zalogowany</p>
-        <p className="text-sm text-muted-foreground">
-          Zaloguj się, aby zobaczyć swoje ogłoszenia
-        </p>
+        <p className="text-sm text-muted-foreground">Zaloguj się, aby zobaczyć swoje ogłoszenia</p>
         <Link href="/auth/signin">
           <Button>Zaloguj się</Button>
         </Link>
@@ -101,9 +99,7 @@ export default function MyOffers() {
               )}
             </div>
           ) : (
-            filteredAdspaces.map((adspace) => (
-              <AdspaceCard key={adspace.id} adspace={adspace} />
-            ))
+            filteredAdspaces.map((adspace) => <AdspaceCard key={adspace.id} adspace={adspace} />)
           )}
         </div>
       </div>

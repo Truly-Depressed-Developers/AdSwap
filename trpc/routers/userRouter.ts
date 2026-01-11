@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma/prisma';
-import { publicProcedure, router } from '../init';
+import { protectedProcedure, publicProcedure, router } from '../init';
 import z from 'zod';
 import bcrypt from 'bcryptjs';
 
@@ -45,5 +45,39 @@ export const userRouter = router({
         lastName: user.lastName,
         email: user.email,
       };
+    }),
+
+  changePassword: protectedProcedure
+    .input(
+      z.object({
+        currentPassword: z.string(),
+        newPassword: z.string().min(8, 'Hasło musi mieć co najmniej 8 znaków'),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const user = await prisma.user.findUnique({
+        where: { id: ctx.user.id },
+      });
+
+      if (!user) {
+        throw new Error('Użytkownik nie znaleziony');
+      }
+
+      const isPasswordValid = await bcrypt.compare(input.currentPassword, user.password);
+
+      if (!isPasswordValid) {
+        throw new Error('Obecne hasło jest nieprawidłowe');
+      }
+
+      const hashed = await bcrypt.hash(input.newPassword, 10);
+
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          password: hashed,
+        },
+      });
+
+      return { success: true };
     }),
 });

@@ -92,9 +92,7 @@ export function SignInForm() {
                     placeholder="••••••••"
                     aria-invalid={fieldState.invalid}
                   />
-                  <FieldDescription>
-                    Wpisz hasło użyte podczas rejestracji
-                  </FieldDescription>
+                  <FieldDescription>Wpisz hasło użyte podczas rejestracji</FieldDescription>
                   <FieldError>{fieldState.error?.message}</FieldError>
                 </Field>
               )}
@@ -103,12 +101,7 @@ export function SignInForm() {
         </CardContent>
 
         <div className="flex flex-col gap-4 border-t p-6">
-          <Button
-            type="submit"
-            size="lg"
-            className="w-full"
-            disabled={form.formState.isSubmitting}
-          >
+          <Button type="submit" size="lg" className="w-full" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? 'Logowanie...' : 'Zaloguj się'}
           </Button>
           <p className="text-center text-sm text-muted-foreground">

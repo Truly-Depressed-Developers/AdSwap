@@ -44,14 +44,14 @@ export function useAdspaceFilters() {
 
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     },
-    [searchParams, router, pathname]
+    [searchParams, router, pathname],
   );
 
   const updateFilter = useCallback(
     <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
       setFilters({ ...filters, [key]: value });
     },
-    [filters, setFilters]
+    [filters, setFilters],
   );
 
   const clearFilters = useCallback(() => {
@@ -59,8 +59,7 @@ export function useAdspaceFilters() {
   }, [setFilters]);
 
   // Count only extended filters (not search)
-  const activeFiltersCount =
-    (filters.typeId ? 1 : 0) + (filters.availability !== 'all' ? 1 : 0);
+  const activeFiltersCount = (filters.typeId ? 1 : 0) + (filters.availability !== 'all' ? 1 : 0);
 
   return {
     filters,

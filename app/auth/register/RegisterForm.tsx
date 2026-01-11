@@ -12,16 +12,18 @@ import { toast } from 'sonner';
 import Link from 'next/link';
 import { trpc } from '@/trpc/client';
 
-const registerSchema = z.object({
-  firstName: z.string().min(1, 'Imię jest wymagane'),
-  lastName: z.string().min(1, 'Nazwisko jest wymagane'),
-  email: z.email('Wpisz prawidłowy adres email'),
-  password: z.string().min(8, 'Hasło musi mieć co najmniej 8 znaków'),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Hasła nie pasują do siebie',
-  path: ['confirmPassword'],
-});
+const registerSchema = z
+  .object({
+    firstName: z.string().min(1, 'Imię jest wymagane'),
+    lastName: z.string().min(1, 'Nazwisko jest wymagane'),
+    email: z.email('Wpisz prawidłowy adres email'),
+    password: z.string().min(8, 'Hasło musi mieć co najmniej 8 znaków'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Hasła nie pasują do siebie',
+    path: ['confirmPassword'],
+  });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 

@@ -22,7 +22,7 @@ export function ViewToggle() {
       value={currentTab}
       onValueChange={(value) => {
         changeCurrentTab(value);
-        router.push(`/oferty/${value}/${query}`);
+        router.push(`/offers/${value}/${query}`);
       }}
     >
       <TabsList className="w-full flex">
