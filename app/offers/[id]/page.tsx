@@ -31,11 +31,11 @@ export default function OfferDetailPage() {
   const id = params.id as string;
   const [mounted, setMounted] = useState(false);
 
-    const { setIsVisible } = useNavbar();
-    useEffect(() => {
-      setIsVisible(false);
-      return () => setIsVisible(true);
-    }, [setIsVisible]);
+  const { setIsVisible } = useNavbar();
+  useEffect(() => {
+    setIsVisible(false);
+    return () => setIsVisible(true);
+  }, [setIsVisible]);
 
   const { data: adspace, isLoading, isError } = trpc.adspace.getById.useQuery({ id });
 
@@ -92,9 +92,7 @@ export default function OfferDetailPage() {
         </div>
 
         {/* Description */}
-        {adspace.description && (
-          <p className="text-base leading-relaxed">{adspace.description}</p>
-        )}
+        {adspace.description && <p className="text-base leading-relaxed">{adspace.description}</p>}
 
         {/* Badges and price row */}
         <div className="flex items-center justify-between">
@@ -116,14 +114,17 @@ export default function OfferDetailPage() {
                 <GlobeIcon size={20} />
                 {/* //open a href to external website */}
                 <a
-                  href={adspace.business.website.startsWith('http') ? adspace.business.website : `https://${adspace.business.website}`}
+                  href={
+                    adspace.business.website.startsWith('http')
+                      ? adspace.business.website
+                      : `https://${adspace.business.website}`
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-base underline hover:text-primary"
                 >
                   {adspace.business.website}
                 </a>
-                
               </div>
             </div>
           )}
@@ -147,7 +148,10 @@ export default function OfferDetailPage() {
         </div>
 
         {/* Business card */}
-        <div className="flex items-center gap-3 py-2">
+        <Link
+          href={`/businesses/${adspace.business.id}`}
+          className="flex items-center gap-3 py-2 hover:bg-muted/50 rounded-lg transition-colors -mx-2 px-2"
+        >
           <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-muted">
             {adspace.business.imageUrl ? (
               <Image
@@ -170,7 +174,7 @@ export default function OfferDetailPage() {
               <span className="text-base text-muted-foreground">(12 opinii)</span>
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* Map in bordered box */}
         {coords && (
@@ -196,7 +200,7 @@ export default function OfferDetailPage() {
       </div>
 
       {/* Fixed bottom button */}
-      <div className="sticky bottom-0 p-4 bg-background border-t z-[10000]">
+      <div className="sticky bottom-0 p-4 bg-background border-t z-10000">
         <Button className="w-full" size="lg">
           Napisz Wiadomość
         </Button>

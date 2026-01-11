@@ -4,51 +4,50 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FeatureBadge } from './FeatureBadge';
 import { StarIcon } from '@phosphor-icons/react';
-import type { AdspacesWithBusinessDTO } from '@/types/dtos/adspace';
 
-type AdspaceCardProps = {
-  adspace: AdspacesWithBusinessDTO;
+type Props = {
+  id: string;
+  name: string;
+  imageUrl: string;
+  pricePerWeek?: number;
+  isBarterAvailable: boolean;
+  businessName: string;
 };
 
-export function AdspaceCard({ adspace }: AdspaceCardProps) {
+export function AdspaceCard({
+  id,
+  name,
+  imageUrl,
+  pricePerWeek,
+  isBarterAvailable,
+  businessName,
+}: Props) {
   return (
     <Link
-      href={`/offers/${adspace.id}`}
+      href={`/offers/${id}`}
       className="flex gap-3 rounded-xl border bg-card p-3 transition-colors hover:bg-muted/50 items-center"
     >
-      {/* Image */}
       <div className="relative h-32 w-24 shrink-0 overflow-hidden rounded-lg bg-muted">
-        <Image src={adspace.imageUrl} alt={adspace.name} fill className="object-cover" />
+        <Image src={imageUrl} alt={name} fill className="object-cover" />
       </div>
 
-      {/* Content */}
       <div className="flex flex-1 flex-col">
-        {/* Header with title and price */}
-        <h3 className="font-medium leading-tight m-0 mb-1">{adspace.name}</h3>
+        <h3 className="font-medium leading-tight m-0 mb-1">{name}</h3>
 
-        {/* Subtitle */}
-        <p className="text-sm text-muted-foreground mb-2">
-          2km stąd • {adspace.business.name}
-        </p>
+        <p className="text-sm text-muted-foreground mb-2">2km stąd • {businessName}</p>
 
-        {/* Rating */}
         <div className="flex justify-between flex-row w-full items-center mb-3">
           <div className="flex items-center gap-1">
             <StarIcon size={16} className="text-yellow-400" weight="fill" />
             <span className="font-medium">4.8</span>
             <span className="text-muted-foreground">(12 opinii)</span>
           </div>
-          {adspace.pricePerWeek && (
-            <span className="shrink-0 font-medium">
-              {adspace.pricePerWeek}zł / tyg
-            </span>
-          )}
+          {pricePerWeek && <span className="shrink-0 font-medium">{pricePerWeek}zł / tyg</span>}
         </div>
 
-        {/* Badges */}
         <div className="flex items-center gap-3">
-          <FeatureBadge label="Barter" active={adspace.isBarterAvailable} />
-          <FeatureBadge label="Sprzedaż" active={adspace.pricePerWeek !== undefined} />
+          <FeatureBadge label="Barter" active={isBarterAvailable} />
+          <FeatureBadge label="Sprzedaż" active={pricePerWeek !== undefined} />
         </div>
       </div>
     </Link>

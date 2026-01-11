@@ -45,12 +45,20 @@ export const businessRouter = router({
           },
         },
         owner: true,
+        ratings: {
+          include: {
+            user: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
     });
 
     if (!business) return null;
 
-    return mapBusinessWithAdspacesToDTO(business);
+    return mapBusinessToDetailDTO(business);
   }),
   list: publicProcedure.query(async () => {
     const businesses = await prisma.business.findMany({

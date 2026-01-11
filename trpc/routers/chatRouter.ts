@@ -163,4 +163,47 @@ export const chatRouter = router({
         senderName: `${ctx.user.firstName} ${ctx.user.lastName}`,
       };
     }),
+  getOrCreate: protectedProcedure
+    .input(z.object({ businessId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const business = await prisma.business.findUnique({
+        where: { id: input.businessId },
+        include: {
+          adspaces: true,
+          owner: true,
+        },
+      });
+
+      if (!business) {
+        throw new Error('Biznes nie istnieje');
+      }
+
+      if (business.ownerId === ctx.user.id) {
+        throw new Error('Nie możesz rozpocząć czatu ze swoim własnym biznesem');
+      }
+
+      const existingChat = await prisma.chat.findFirst({
+        where: {
+          AND: [
+            { participants: { some: { id: ctx.user.id } } },
+            { participants: { some: { id: business.ownerId } } },
+          ],
+        },
+      });
+
+      if (existingChat) {
+        return { id: existingChat.id };
+      }
+
+      const newChat = await prisma.chat.create({
+        data: {
+          participants: {
+            connect: [{ id: ctx.user.id }, { id: business.ownerId }],
+          },
+          adspaces: business.adspaces[0] ? { connect: { id: business.adspaces[0].id } } : undefined,
+        },
+      });
+
+      return { id: newChat.id };
+    }),
 });

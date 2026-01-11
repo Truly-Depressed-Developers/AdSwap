@@ -56,7 +56,17 @@ export function AdspaceList() {
               </Button>
             </div>
           ) : (
-            filteredAdspaces.map((adspace) => <AdspaceCard key={adspace.id} adspace={adspace} />)
+            filteredAdspaces.map((adspace) => (
+              <AdspaceCard
+                key={adspace.id}
+                id={adspace.id}
+                name={adspace.name}
+                imageUrl={adspace.imageUrl}
+                pricePerWeek={adspace.pricePerWeek}
+                isBarterAvailable={adspace.isBarterAvailable}
+                businessName={adspace.business.name}
+              />
+            ))
           )}
         </div>
       </div>

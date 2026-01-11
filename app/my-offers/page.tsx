@@ -65,7 +65,7 @@ export default function MyOffers() {
           onFilterChange={updateFilter}
           onClear={clearFilters}
           activeFiltersCount={activeFiltersCount}
-          className='h-12'
+          className="h-12"
         />
       </div>
 
@@ -97,14 +97,24 @@ export default function MyOffers() {
               )}
             </div>
           ) : (
-            filteredAdspaces.map((adspace) => <AdspaceCard key={adspace.id} adspace={adspace} />)
+            filteredAdspaces.map((adspace) => (
+              <AdspaceCard
+                key={adspace.id}
+                id={adspace.id}
+                name={adspace.name}
+                imageUrl={adspace.imageUrl}
+                pricePerWeek={adspace.pricePerWeek}
+                isBarterAvailable={adspace.isBarterAvailable}
+                businessName={adspace.business.name}
+              />
+            ))
           )}
         </div>
       </div>
 
       <Link href="/my-offers/create-offer" className="absolute bottom-5 right-5 z-50">
-        <Button size='icon-lg' className="h-14 w-14 rounded-full shadow-lg">
-          <PlusIcon size={32} className='size-7' />
+        <Button size="icon-lg" className="h-14 w-14 rounded-full shadow-lg">
+          <PlusIcon size={32} className="size-7" />
         </Button>
       </Link>
     </div>

@@ -18,14 +18,18 @@ export default function ChatPage() {
   const [message, setMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { data: chat, isLoading, refetch } = trpc.chat.getById.useQuery(
+  const {
+    data: chat,
+    isLoading,
+    refetch,
+  } = trpc.chat.getById.useQuery(
     { id },
     {
       refetchInterval: 2000,
       refetchIntervalInBackground: false,
-    }
+    },
   );
-  
+
   const sendMessageMutation = trpc.chat.sendMessage.useMutation({
     onSuccess: () => {
       refetch();
@@ -81,16 +85,14 @@ export default function ChatPage() {
       </div>
 
       {adspace && (
-        <Link href={`/offers/${adspace.id}`} className="shrink-0 border-b bg-card hover:bg-muted/50 transition-colors">
+        <Link
+          href={`/offers/${adspace.id}`}
+          className="shrink-0 border-b bg-card hover:bg-muted/50 transition-colors"
+        >
           <div className="px-4 py-3">
             <div className="flex items-center gap-3">
               <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-muted">
-                <Image
-                  src={adspace.imageUrl}
-                  alt={adspace.name}
-                  fill
-                  className="object-cover"
-                />
+                <Image src={adspace.imageUrl} alt={adspace.name} fill className="object-cover" />
               </div>
               <div className="flex-1">
                 <p className="font-medium">{adspace.name}</p>
