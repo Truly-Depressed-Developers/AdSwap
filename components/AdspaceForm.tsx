@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useMemo, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
@@ -42,7 +42,7 @@ const createAdspaceFormSchema = (typeIds: [string, ...string[]]) =>
       .optional(),
   });
 
-export default function AdspaceForm() {
+export default function AdspaceForm({ adspaceId }: { adspaceId?: string | null }) {
   const { data: types, isPending, isError } = trpc.adspace.types.useQuery();
 
   if (isPending) {
@@ -53,15 +53,21 @@ export default function AdspaceForm() {
     return <div>Błąd podczas ładowania typów</div>;
   }
 
-  return <AdspaceFormInner types={types} />;
+  return <AdspaceFormInner types={types} adspaceId={adspaceId} />;
 }
 
-function AdspaceFormInner({ types }: { types: AdspaceTypeDTO[] }) {
+function AdspaceFormInner({ types, adspaceId }: { types: AdspaceTypeDTO[]; adspaceId?: string | null }) {
   const router = useRouter();
+
   const { mutateAsync: createAdspace } = trpc.adspace.create.useMutation();
+  const { mutateAsync: updateAdspace } = trpc.adspace.update.useMutation();
+  const { data: adspaceToEdit, isLoading: isLoadingEdit } = trpc.adspace.getById.useQuery(
+    { id: adspaceId! },
+    { enabled: !!adspaceId },
+  );
+  console.log(adspaceToEdit)
 
   const typeIds = useMemo(() => types.map((t) => t.id) as [string, ...string[]], [types]);
-
   const schema = useMemo(() => createAdspaceFormSchema(typeIds), [typeIds]);
 
   const form = useForm<z.infer<typeof schema>>({
@@ -75,14 +81,37 @@ function AdspaceFormInner({ types }: { types: AdspaceTypeDTO[] }) {
     },
   });
 
+  useEffect(() => {
+    if (adspaceToEdit) {
+      form.reset({
+        name: adspaceToEdit.name,
+        description: adspaceToEdit.description ?? '',
+        type: adspaceToEdit.type.id,
+        maxWidth: adspaceToEdit.maxWidth,
+        maxHeight: adspaceToEdit.maxHeight,
+        isBarterAvailable: adspaceToEdit.isBarterAvailable,
+        pricePerWeek: adspaceToEdit.pricePerWeek,
+      });
+      console.log('reseeet')
+    }
+  }, [adspaceToEdit]);
+
   const onSubmit = async (data: z.infer<typeof schema>) => {
     try {
-      await createAdspace(data);
+      if (adspaceId) {
+        await updateAdspace({ id: adspaceId, ...data });
+      } else {
+        await createAdspace(data);
+      }
       router.push('/my-offers');
     } catch (error) {
-      console.error('Błąd podczas tworzenia powierzchni reklamowej:', error);
+      console.error('Błąd podczas zapisywania powierzchni reklamowej:', error);
     }
   };
+
+  if (adspaceId && isLoadingEdit) {
+    return <div>Ładowanie...</div>;
+  }
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
@@ -303,7 +332,7 @@ function AdspaceFormInner({ types }: { types: AdspaceTypeDTO[] }) {
 
       <div className="pt-4">
         <Button type="submit" size="lg" className="w-full sm:w-auto">
-          Utwórz powierzchnię reklamową
+          {adspaceId ? 'Zaktualizuj powierzchnię' : 'Utwórz powierzchnię reklamową'}
         </Button>
       </div>
     </form>

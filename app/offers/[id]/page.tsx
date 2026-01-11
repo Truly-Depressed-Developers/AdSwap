@@ -12,6 +12,7 @@ import 'leaflet/dist/leaflet.css';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useNavbar } from '@/hooks/useNavbar';
+import { useSession } from 'next-auth/react';
 
 const defaultIcon = L.icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -30,6 +31,7 @@ export default function OfferDetailPage() {
   const router = useRouter();
   const id = params.id as string;
   const [mounted, setMounted] = useState(false);
+  const { data: session } = useSession();
 
   const { setIsVisible } = useNavbar();
   useEffect(() => {
@@ -64,6 +66,8 @@ export default function OfferDetailPage() {
   }
 
   const coords = adspace.business.coords;
+
+  const ownOffer = adspace.business.owner.id === session?.user.id;
 
   return (
     <div className="flex flex-col min-h-dvh bg-background">
@@ -194,11 +198,25 @@ export default function OfferDetailPage() {
         </div>
       </div>
 
-      <div className="sticky bottom-0 p-4 bg-background border-t z-1000">
-        <Button className="w-full" size="lg">
-          Napisz Wiadomość
-        </Button>
-      </div>
+      {ownOffer ?         
+        <div className="sticky bottom-0 p-4 bg-background border-t z-[10000] flex gap-2">
+          <Button 
+            className="w-full flex-3" 
+            size="lg"
+            onClick={() => router.push('/my-offers/edit-offer/' + adspace.id)}
+          >
+            Edytuj Ofertę 
+          </Button>
+          <Button className="w-full flex-2" size="lg" variant={'outline'}>
+            Ukryj Ofertę
+          </Button>
+        </div> : (
+        <div className="sticky bottom-0 p-4 bg-background border-t z-[10000]">
+          <Button className="w-full" size="lg">
+            Napisz Wiadomość
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

@@ -61,6 +61,9 @@ export const adspaceRouter = router({
     if (!adspace) {
       return null;
     }
+    if (!adspace) {
+      return null;
+    }
 
     return mapAdspaceWithBusinessToDTO(adspace);
   }),
@@ -111,5 +114,51 @@ export const adspaceRouter = router({
       });
 
       return adspace;
+    }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        description: z.string().optional(),
+        type: z.string(),
+        maxWidth: z.number(),
+        maxHeight: z.number(),
+        isBarterAvailable: z.boolean(),
+        pricePerWeek: z.number().optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const adspace = await prisma.adspace.findUnique({
+        where: { id: input.id },
+        include: { business: true },
+      });
+
+      if (!adspace) {
+        throw new Error('Adspace nie znaleziony');
+      }
+
+      if (adspace.business.ownerId !== ctx.user.id) {
+        throw new Error('Nie masz dostępu do edycji tej powierzchni');
+      }
+
+      const updated = await prisma.adspace.update({
+        where: { id: input.id },
+        data: {
+          name: input.name,
+          description: input.description,
+          type: {
+            connect: {
+              id: input.type,
+            },
+          },
+          maxWidth: input.maxWidth,
+          maxHeight: input.maxHeight,
+          isBarterAvailable: input.isBarterAvailable,
+          pricePerWeek: input.pricePerWeek,
+        },
+      });
+
+      return updated;
     }),
 });
