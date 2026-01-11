@@ -12,7 +12,7 @@ export function ThemeProvider({
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
   return (
-    <NextThemesProvider attribute="class" disableTransitionOnChange {...props}>
+    <NextThemesProvider attribute="class" defaultTheme="light" disableTransitionOnChange {...props}>
       {children}
     </NextThemesProvider>
   );
