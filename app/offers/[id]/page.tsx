@@ -33,6 +33,18 @@ export default function OfferDetailPage() {
   const [mounted, setMounted] = useState(false);
   const { data: session } = useSession();
 
+
+    const createChat = trpc.chat.getOrCreate.useMutation({
+      onSuccess: (data) => {
+        console.log('Chat created/found:', data);
+        router.push(`/chats/${data.id}`);
+      },
+      onError: (error) => {
+        console.error('Failed to create chat:', error);
+      },
+    });
+
+
   const { setIsVisible } = useNavbar();
   useEffect(() => {
     setIsVisible(false);
@@ -212,7 +224,12 @@ export default function OfferDetailPage() {
           </Button>
         </div> : (
         <div className="sticky bottom-0 p-4 bg-background border-t z-[10000]">
-          <Button className="w-full" size="lg">
+          <Button 
+            className="w-full" 
+            size="lg"
+            onClick={() => createChat.mutate({ businessId: adspace.business.id })}
+            disabled={createChat.isPending}
+          >
             Napisz Wiadomość
           </Button>
         </div>
