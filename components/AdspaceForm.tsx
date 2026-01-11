@@ -56,7 +56,13 @@ export default function AdspaceForm({ adspaceId }: { adspaceId?: string | null }
   return <AdspaceFormInner types={types} adspaceId={adspaceId} />;
 }
 
-function AdspaceFormInner({ types, adspaceId }: { types: AdspaceTypeDTO[]; adspaceId?: string | null }) {
+function AdspaceFormInner({
+  types,
+  adspaceId,
+}: {
+  types: AdspaceTypeDTO[];
+  adspaceId?: string | null;
+}) {
   const router = useRouter();
 
   const { mutateAsync: createAdspace } = trpc.adspace.create.useMutation();
@@ -65,7 +71,7 @@ function AdspaceFormInner({ types, adspaceId }: { types: AdspaceTypeDTO[]; adspa
     { id: adspaceId! },
     { enabled: !!adspaceId },
   );
-  console.log(adspaceToEdit)
+  console.log(adspaceToEdit);
 
   const typeIds = useMemo(() => types.map((t) => t.id) as [string, ...string[]], [types]);
   const schema = useMemo(() => createAdspaceFormSchema(typeIds), [typeIds]);
@@ -92,7 +98,7 @@ function AdspaceFormInner({ types, adspaceId }: { types: AdspaceTypeDTO[]; adspa
         isBarterAvailable: adspaceToEdit.isBarterAvailable,
         pricePerWeek: adspaceToEdit.pricePerWeek,
       });
-      console.log('reseeet')
+      console.log('reseeet');
     }
   }, [adspaceToEdit]);
 

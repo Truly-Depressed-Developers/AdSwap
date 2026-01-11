@@ -13,9 +13,7 @@ export function NavbarProvider({ children }: { children: ReactNode }) {
   const [isVisible, setIsVisible] = useState(true);
 
   return (
-    <NavbarContext.Provider value={{ isVisible, setIsVisible }}>
-      {children}
-    </NavbarContext.Provider>
+    <NavbarContext.Provider value={{ isVisible, setIsVisible }}>{children}</NavbarContext.Provider>
   );
 }
 

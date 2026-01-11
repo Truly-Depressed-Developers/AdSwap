@@ -4,7 +4,11 @@ import './globals.css';
 import { Providers } from '@/components/providers/Providers';
 import { LayoutInner } from './layoutInner';
 
-const roboto = Roboto({ subsets: ['latin'], variable: '--font-sans', weight: ['400', '500', '700'] });
+const roboto = Roboto({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  weight: ['400', '500', '700'],
+});
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,9 +34,7 @@ export default function RootLayout({
     <html lang="en" className={roboto.variable}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
-          <LayoutInner>
-            {children}
-          </LayoutInner>
+          <LayoutInner>{children}</LayoutInner>
         </Providers>
       </body>
     </html>

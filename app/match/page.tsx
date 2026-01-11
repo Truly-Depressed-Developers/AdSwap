@@ -112,7 +112,7 @@ export default function MatchPage() {
     <div className="flex flex-col h-full bg-background">
       <main className="flex-1 flex flex-col items-center justify-center overflow-hidden">
         <div className="relative w-full max-w-sm h-full flex items-center justify-center">
-          <SwipeCard 
+          <SwipeCard
             key={currentCard.id}
             business={currentCard}
             onSwipeLeft={() => handleSwipe('left')}

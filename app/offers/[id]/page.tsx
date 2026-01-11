@@ -92,7 +92,7 @@ export default function OfferDetailPage() {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto -mt-[78px]">
+      <div className="flex-1 overflow-y-auto -mt-19.5">
         <div className="relative h-48 w-full bg-muted">
           <Image src={adspace.imageUrl} alt={adspace.name} fill className="object-cover" />
         </div>

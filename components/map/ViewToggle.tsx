@@ -26,8 +26,12 @@ export function ViewToggle() {
       }}
     >
       <TabsList className="w-full flex h-12!">
-        <TabsTrigger value="list" className='rounded-4xl'>Lista</TabsTrigger>
-        <TabsTrigger value="map" className='rounded-4xl'>Mapa</TabsTrigger>
+        <TabsTrigger value="list" className="rounded-4xl">
+          Lista
+        </TabsTrigger>
+        <TabsTrigger value="map" className="rounded-4xl">
+          Mapa
+        </TabsTrigger>
       </TabsList>
     </Tabs>
   );

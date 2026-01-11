@@ -19,11 +19,11 @@ export function SwipeCard({ business, onSwipeLeft, onSwipeRight }: SwipeCardProp
   const featuredAdspace = business.adspaces[0];
   const [exitX, setExitX] = useState(0);
   const [swiped, setSwiped] = useState(false);
-  
+
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 0, 200], [-25, 0, 25]);
   const opacity = useTransform(x, [-200, -150, 0, 150, 200], [0, 1, 1, 1, 0]);
-  
+
   const leftIndicatorOpacity = useTransform(x, [-200, -50, 0], [0.7, 1, 0]);
   const rightIndicatorOpacity = useTransform(x, [0, 50, 200], [0, 1, 0.7]);
 
@@ -32,7 +32,7 @@ export function SwipeCard({ business, onSwipeLeft, onSwipeRight }: SwipeCardProp
       setSwiped(true);
       const direction = info.offset.x > 0 ? 300 : -300;
       setExitX(direction);
-      
+
       setTimeout(() => {
         if (direction > 0) {
           onSwipeRight?.();
@@ -49,44 +49,52 @@ export function SwipeCard({ business, onSwipeLeft, onSwipeRight }: SwipeCardProp
         style={{ opacity: rightIndicatorOpacity }}
         className="absolute inset-0 flex items-center justify-start pointer-events-none"
       >
-        <div 
+        <div
           className="w-full h-full flex items-center justify-center"
           style={{
-            background: 'radial-gradient(ellipse 80% 100% at 0% 50%, rgba(34, 197, 94, 0.5) 0%, rgba(34, 197, 94, 0.2) 40%, transparent 70%)'
+            background:
+              'radial-gradient(ellipse 80% 100% at 0% 50%, rgba(34, 197, 94, 0.5) 0%, rgba(34, 197, 94, 0.2) 40%, transparent 70%)',
           }}
         >
-          <div className="text-green-500 text-8xl font-bold ml-16"><CheckIcon /></div>
+          <div className="text-green-500 text-8xl font-bold ml-16">
+            <CheckIcon />
+          </div>
         </div>
       </motion.div>
-      
+
       <motion.div
         style={{ opacity: leftIndicatorOpacity }}
         className="absolute inset-0 flex items-center justify-end pointer-events-none"
       >
-        <div 
+        <div
           className="w-full h-full flex items-center justify-center"
           style={{
-            background: 'radial-gradient(ellipse 80% 100% at 100% 50%, rgba(239, 68, 68, 0.5) 0%, rgba(239, 68, 68, 0.2) 40%, transparent 70%)'
+            background:
+              'radial-gradient(ellipse 80% 100% at 100% 50%, rgba(239, 68, 68, 0.5) 0%, rgba(239, 68, 68, 0.2) 40%, transparent 70%)',
           }}
         >
-          <div className="text-red-500 text-8xl font-bold mr-16"><XIcon /></div>
+          <div className="text-red-500 text-8xl font-bold mr-16">
+            <XIcon />
+          </div>
         </div>
       </motion.div>
 
       <motion.div
         style={{ x, rotate, opacity }}
-        drag={swiped ? false : "x"}
+        drag={swiped ? false : 'x'}
         dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={handleDragEnd}
         animate={{ x: exitX }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full cursor-grab active:cursor-grabbing"
       >
-        <div className='px-4'>
+        <div className="px-4">
           <Card className="w-full h-150 max-w-sm mx-auto overflow-hidden shadow-xl py-0">
             <div className="relative h-64 w-full bg-muted">
               <Image
-                src={featuredAdspace?.imageUrl || business.imageUrl || 'https://placehold.co/400x300'}
+                src={
+                  featuredAdspace?.imageUrl || business.imageUrl || 'https://placehold.co/400x300'
+                }
                 alt={business.name}
                 fill
                 className="object-cover"
@@ -131,7 +139,10 @@ export function SwipeCard({ business, onSwipeLeft, onSwipeRight }: SwipeCardProp
                     <span className="font-medium">{featuredAdspace.name}</span>
                     <div className="flex gap-1">
                       <FeatureBadge label="Barter" active={featuredAdspace.isBarterAvailable} />
-                      <FeatureBadge label="Sprzedaż" active={featuredAdspace.pricePerWeek !== null} />
+                      <FeatureBadge
+                        label="Sprzedaż"
+                        active={featuredAdspace.pricePerWeek !== null}
+                      />
                     </div>
                   </div>
                   <div className="text-base text-muted-foreground">
