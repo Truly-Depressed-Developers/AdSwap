@@ -4,16 +4,30 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useAdspaceFilters } from '../../hooks/useAdspaceFilters';
-import { mockAdspaces, filterAdspaces } from '../../mock/mockMapData';
+import { filterAdspaces } from '@/lib/filterAdspaces';
+import { trpc } from '@/trpc/client';
 import { SearchBar } from './SearchBar';
 import { ViewToggle } from './ViewToggle';
 import { FeatureBadge } from './FeatureBadge';
-import { ImageSquareIcon, StarIcon } from '@phosphor-icons/react';
+import { StarIcon } from '@phosphor-icons/react';
+import { useMemo } from 'react';
 
 export function AdspaceList() {
   const { filters, updateFilter, clearFilters, activeFiltersCount } = useAdspaceFilters();
+  const { data: adspaces, isLoading } = trpc.adspace.list.useQuery();
 
-  const filteredAdspaces = filterAdspaces(mockAdspaces, filters);
+  const filteredAdspaces = useMemo(
+    () => filterAdspaces(adspaces ?? [], filters),
+    [adspaces, filters]
+  );
+
+  if (isLoading) {
+    return (
+      <div className="flex h-dvh w-full items-center justify-center bg-background">
+        <span className="text-muted-foreground">Ładowanie...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-dvh w-full flex-col bg-background">

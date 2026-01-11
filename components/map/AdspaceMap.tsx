@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -8,7 +8,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useAdspaceFilters } from '../../hooks/useAdspaceFilters';
-import { mockAdspaces, filterAdspaces } from '../../mock/mockMapData';
+import { filterAdspaces } from '@/lib/filterAdspaces';
+import { trpc } from '@/trpc/client';
 import { SearchBar } from './SearchBar';
 import { ViewToggle } from './ViewToggle';
 import { ImageSquareIcon } from '@phosphor-icons/react';
@@ -33,14 +34,18 @@ const DEFAULT_ZOOM = 13;
 export function AdspaceMap() {
   const { filters, updateFilter, clearFilters, activeFiltersCount } = useAdspaceFilters();
   const [mounted, setMounted] = useState(false);
+  const { data: adspaces, isLoading } = trpc.adspace.list.useQuery();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const filteredAdspaces = filterAdspaces(mockAdspaces, filters);
+  const filteredAdspaces = useMemo(
+    () => filterAdspaces(adspaces ?? [], filters),
+    [adspaces, filters]
+  );
 
-  if (!mounted) {
+  if (!mounted || isLoading) {
     return (
       <div className="flex h-dvh w-full items-center justify-center bg-muted">
         <span className="text-muted-foreground">Ładowanie mapy...</span>

@@ -2,7 +2,7 @@
 
 import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
-import { mockAdspaceTypes } from '../../mock/mockMapData';
+import { trpc } from '@/trpc/client';
 import type { FilterState } from '../../hooks/useAdspaceFilters';
 
 type FilterPanelProps = {
@@ -13,6 +13,8 @@ type FilterPanelProps = {
 };
 
 export function FilterPanel({ filters, onFilterChange, onClear, onClose }: FilterPanelProps) {
+  const { data: adspaceTypes } = trpc.adspace.types.useQuery();
+
   const content = (
     <>
       {/* Backdrop */}
@@ -35,7 +37,7 @@ export function FilterPanel({ filters, onFilterChange, onClear, onClose }: Filte
               onChange={(e) => onFilterChange('typeId', e.target.value || null)}
             >
               <option value="">Wszystkie typy</option>
-              {mockAdspaceTypes.map((type) => (
+              {adspaceTypes?.map((type) => (
                 <option key={type.id} value={type.id}>
                   {type.name}
                 </option>
