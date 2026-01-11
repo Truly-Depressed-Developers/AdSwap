@@ -67,142 +67,134 @@ export default function OfferDetailPage() {
 
   return (
     <div className="flex flex-col min-h-dvh bg-background">
-      {/* Image section with back button */}
-      <div className="relative h-48 w-full bg-muted">
-        {/* Back button */}
+      <div className="sticky top-0 z-20 flex items-center p-4 bg-transparent pointer-events-none">
         <button
           onClick={() => router.back()}
-          className="absolute top-4 left-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-background shadow-md"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-background shadow-md pointer-events-auto"
         >
           <ArrowLeftIcon size={20} />
         </button>
-
-        {/* Adspace image */}
-        <Image src={adspace.imageUrl} alt={adspace.name} fill className="object-cover" />
       </div>
 
-      {/* Content */}
-      <div className="flex-1 p-4 space-y-4">
-        {/* Title */}
-        <div>
-          <h1 className="text-lg font-medium mb-1">{adspace.name}</h1>
-          <p className="text-base text-muted-foreground">
-            2km stąd • {adspace.business.address.split(',')[0]}
-          </p>
+      <div className="flex-1 overflow-y-auto -mt-[78px]">
+        <div className="relative h-48 w-full bg-muted">
+          <Image src={adspace.imageUrl} alt={adspace.name} fill className="object-cover" />
         </div>
 
-        {/* Description */}
-        {adspace.description && (
-          <p className="text-base text-justify text-gray-800 leading-relaxed">{adspace.description}</p>
-        )}
-
-        {/* Badges and price row */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
-            <FeatureBadge label="Barter" active={adspace.isBarterAvailable} />
-            <FeatureBadge label="Sprzedaż" active={adspace.pricePerWeek !== undefined} />
-          </div>
-          {adspace.pricePerWeek && (
-            <span className="font-medium">{adspace.pricePerWeek}zł / tyg</span>
-          )}
-        </div>
-
-        {/* Details section */}
-        <div className="space-y-3 py-2">
-          {adspace.business.website && (
-            <div className="flex items-center justify-between">
-              <span className="text-base font-medium">Strona internetowa:</span>
-              <div className="flex items-center gap-2">
-                <GlobeIcon size={20} />
-                {/* //open a href to external website */}
-                <a
-                  href={
-                    adspace.business.website.startsWith('http')
-                      ? adspace.business.website
-                      : `https://${adspace.business.website}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-base underline hover:text-primary"
-                >
-                  {adspace.business.website}
-                </a>
-              </div>
-            </div>
-          )}
-
-          <div className="flex items-center justify-between">
-            <span className="text-base  font-medium">Typ reklamy:</span>
-            <span className="text-base">{adspace.type.name}</span>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <span className="text-base  font-medium">Wymiary:</span>
-            <span className="text-base">
-              {adspace.maxWidth} x {adspace.maxHeight} cm
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <span className="text-base font-medium">Grupa docelowa:</span>
-            <span className="text-base">{adspace.business.targetAudience}</span>
-          </div>
-        </div>
-
-        {/* Business card */}
-        <Link
-          href={`/businesses/${adspace.business.id}`}
-          className="flex items-center gap-3 py-2 hover:bg-muted/50 rounded-lg transition-colors -mx-2 px-2"
-        >
-          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-muted">
-            {adspace.business.logoUrl ? (
-              <Image
-                src={adspace.business.logoUrl}
-                alt={adspace.business.name}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center bg-yellow-400 text-white font-bold">
-                {adspace.business.name.charAt(0)}
-              </div>
-            )}
-          </div>
+        <div className="p-4 space-y-4">
           <div>
-            <p className="font-medium">{adspace.business.name}</p>
-            <div className="flex items-center gap-1">
-              <StarIcon size={14} className="text-yellow-400" weight="fill" />
-              <span className="text-base font-medium">4.8</span>
-              <span className="text-base text-muted-foreground">(12 opinii)</span>
-            </div>
+            <h1 className="text-lg font-medium mb-1">{adspace.name}</h1>
+            <p className="text-base text-muted-foreground">
+              2km stąd • {adspace.business.address.split(',')[0]}
+            </p>
           </div>
-        </Link>
 
-        {/* Map in bordered box */}
-        {coords && (
-          <div className="rounded-xl border overflow-hidden h-55">
-            {mounted && (
-              <MapContainer
-                center={[coords.latitude, coords.longitude]}
-                zoom={15}
-                className="h-full w-full"
-                scrollWheelZoom={false}
-                zoomControl={true}
-                dragging={true}
-              >
-                <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={[coords.latitude, coords.longitude]} />
-              </MapContainer>
+          {adspace.description && (
+            <p className="text-base leading-relaxed">{adspace.description}</p>
+          )}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1">
+              <FeatureBadge label="Barter" active={adspace.isBarterAvailable} />
+              <FeatureBadge label="Sprzedaż" active={adspace.pricePerWeek !== undefined} />
+            </div>
+            {adspace.pricePerWeek && (
+              <span className="font-medium">{adspace.pricePerWeek}zł / tyg</span>
             )}
           </div>
-        )}
+
+          <div className="space-y-3 py-2">
+            {adspace.business.website && (
+              <div className="flex items-center justify-between">
+                <span className="text-base font-medium">Strona internetowa:</span>
+                <div className="flex items-center gap-2">
+                  <GlobeIcon size={20} />
+                  <a
+                    href={
+                      adspace.business.website.startsWith('http')
+                        ? adspace.business.website
+                        : `https://${adspace.business.website}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-base underline hover:text-primary"
+                  >
+                    {adspace.business.website}
+                  </a>
+                </div>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between">
+              <span className="text-base  font-medium">Typ reklamy:</span>
+              <span className="text-base">{adspace.type.name}</span>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <span className="text-base  font-medium">Wymiary:</span>
+              <span className="text-base">
+                {adspace.maxWidth} x {adspace.maxHeight} cm
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <span className="text-base font-medium">Grupa docelowa:</span>
+              <span className="text-base">{adspace.business.targetAudience}</span>
+            </div>
+          </div>
+
+          <Link
+            href={`/businesses/${adspace.business.id}`}
+            className="flex items-center gap-3 py-2 hover:bg-muted/50 rounded-lg transition-colors -mx-2 px-2"
+          >
+            <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-muted">
+              {adspace.business.imageUrl ? (
+                <Image
+                  src={adspace.business.imageUrl}
+                  alt={adspace.business.name}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-yellow-400 text-white font-bold">
+                  {adspace.business.name.charAt(0)}
+                </div>
+              )}
+            </div>
+            <div>
+              <p className="font-medium">{adspace.business.name}</p>
+              <div className="flex items-center gap-1">
+                <StarIcon size={14} className="text-yellow-400" weight="fill" />
+                <span className="text-base font-medium">4.8</span>
+                <span className="text-base text-muted-foreground">(12 opinii)</span>
+              </div>
+            </div>
+          </Link>
+
+          {/* Map in bordered box */}
+          {coords && (
+            <div className="rounded-xl border overflow-hidden h-55">
+              {mounted && (
+                <MapContainer
+                  center={[coords.latitude, coords.longitude]}
+                  zoom={15}
+                  className="h-full w-full"
+                  scrollWheelZoom={false}
+                  zoomControl={true}
+                  dragging={true}
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker position={[coords.latitude, coords.longitude]} />
+                </MapContainer>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Fixed bottom button */}
-      <div className="sticky bottom-0 p-4 bg-background border-t z-10000">
+      <div className="sticky bottom-0 p-4 bg-background border-t z-1000">
         <Button className="w-full" size="lg">
           Napisz Wiadomość
         </Button>

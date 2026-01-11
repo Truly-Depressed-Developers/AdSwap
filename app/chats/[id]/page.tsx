@@ -6,9 +6,11 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { trpc } from '@/trpc/client';
-import { ArrowLeftIcon, PaperPlaneRightIcon } from '@phosphor-icons/react';
+import { PaperPlaneRightIcon } from '@phosphor-icons/react';
 import { format } from 'date-fns';
 import { pl } from 'date-fns/locale';
+import { PageHeaderWithBack } from '@/components/FormHeader';
+import { useNavbar } from '@/hooks/useNavbar';
 
 export default function ChatPage() {
   const params = useParams();
@@ -17,6 +19,13 @@ export default function ChatPage() {
   const id = params.id as string;
   const [message, setMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const { setIsVisible } = useNavbar();
+
+  useEffect(() => {
+    setIsVisible(false);
+    return () => setIsVisible(true);
+  }, [setIsVisible]);
 
   const {
     data: chat,
@@ -73,21 +82,13 @@ export default function ChatPage() {
   const adspace = chat.connectedAdspaces[0];
 
   return (
-    <div className="flex h-full flex-col bg-background">
-      <div className="shrink-0 border-b bg-background px-4 py-3 flex items-center gap-3">
-        <button
-          onClick={() => router.back()}
-          className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted"
-        >
-          <ArrowLeftIcon size={20} />
-        </button>
-        <h1 className="text-lg font-medium">{chat.businessContext.name}</h1>
-      </div>
+    <div className="flex flex-col min-h-dvh bg-background">
+      <PageHeaderWithBack title={chat.businessContext.name} />
 
       {adspace && (
         <Link
           href={`/offers/${adspace.id}`}
-          className="shrink-0 border-b bg-card hover:bg-muted/50 transition-colors"
+          className="sticky top-[57px] z-10 shrink-0 border-b bg-card hover:bg-muted/50 transition-colors"
         >
           <div className="px-4 py-3">
             <div className="flex items-center gap-3">
@@ -135,7 +136,7 @@ export default function ChatPage() {
         </div>
       </div>
 
-      <div className="shrink-0 border-t bg-background px-4 py-3">
+      <div className="sticky bottom-0 z-10 shrink-0 border-t bg-background px-4 py-3">
         <div className="flex items-center gap-2">
           <input
             type="text"
@@ -148,7 +149,7 @@ export default function ChatPage() {
           <button
             onClick={handleSend}
             disabled={!message.trim() || sendMessageMutation.isPending}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
             <PaperPlaneRightIcon size={20} weight="fill" />
           </button>

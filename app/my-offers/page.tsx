@@ -24,7 +24,6 @@ export default function MyOffers() {
     [adspaces, filters],
   );
 
-  // Loading session
   if (status === 'loading') {
     return (
       <div className="flex h-full w-full items-center justify-center bg-background">
@@ -56,9 +55,8 @@ export default function MyOffers() {
   }
 
   return (
-    <div className="flex w-full flex-col bg-background">
-      {/* Fixed header with search */}
-      <div className="shrink-0 border-b bg-background p-4 pt-0">
+    <div className="flex flex-col min-h-dvh bg-background">
+      <div className="sticky top-0 z-10 shrink-0 border-b bg-background p-4 pt-0">
         <PageHeader title="Moje ogłoszenia" hideLine={true} />
         <SearchBar
           filters={filters}
@@ -69,7 +67,6 @@ export default function MyOffers() {
         />
       </div>
 
-      {/* Scrollable items */}
       <div className="flex-1 overflow-y-auto">
         <div className="flex flex-col gap-3 p-4">
           {filteredAdspaces.length === 0 ? (

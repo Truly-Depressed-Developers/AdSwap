@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ArrowLeftIcon, ChatCircleTextIcon, StarIcon } from '@phosphor-icons/react';
+import { ChatCircleTextIcon, StarIcon } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { AdspaceCard } from '@/components/map/AdspaceCard';
 import { ReviewCard } from '@/components/business/ReviewCard';
@@ -9,6 +9,7 @@ import { trpc } from '@/trpc/client';
 import type { BusinessDetailDTO } from '@/types/dtos/business';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { PageHeaderWithBack } from '@/components/FormHeader';
 
 type BusinessProfileViewProps = {
   business: BusinessDetailDTO;
@@ -41,17 +42,7 @@ export function BusinessProfileView({ business, isOwner = false }: BusinessProfi
 
   return (
     <div className="flex flex-col min-h-dvh bg-background">
-      <div className="relative flex items-center justify-center p-4 border-b bg-background z-10">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => router.back()}
-          className="absolute size-12 left-4 rounded-full"
-        >
-          <ArrowLeftIcon size={28} />
-        </Button>
-        <h1 className="text-lg font-semibold">Profil Biznesu</h1>
-      </div>
+      <PageHeaderWithBack title="Profil Biznesu" />
 
       <div className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-6">

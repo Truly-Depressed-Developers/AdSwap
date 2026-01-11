@@ -8,6 +8,7 @@ import { SearchBar } from './SearchBar';
 import { ViewToggle } from './ViewToggle';
 import { AdspaceCard } from './AdspaceCard';
 import { useMemo } from 'react';
+import { PageHeader } from '@/components/PageHeader';
 
 export function AdspaceList() {
   const { filters, updateFilter, clearFilters, activeFiltersCount } = useAdspaceFilters();
@@ -27,9 +28,9 @@ export function AdspaceList() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col bg-background">
-      {/* Fixed header with search */}
-      <div className="shrink-0 border-b bg-background px-4 py-4">
+    <div className="flex flex-col min-h-dvh bg-background">
+      <div className="sticky top-0 z-10 shrink-0 border-b bg-background p-4 pt-0">
+        <PageHeader title="Oferty" hideLine={true} />
         <div className="flex items-center gap-3 flex-col">
           <SearchBar
             filters={filters}
@@ -42,7 +43,6 @@ export function AdspaceList() {
         </div>
       </div>
 
-      {/* Scrollable items */}
       <div className="flex-1 overflow-y-auto">
         <div className="flex flex-col gap-3 p-4">
           {filteredAdspaces.length === 0 ? (
