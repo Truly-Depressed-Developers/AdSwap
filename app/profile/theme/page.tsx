@@ -20,7 +20,7 @@ export default function ThemePage() {
   return (
     <div className="flex min-h-full flex-col bg-background p-4">
       <header className="flex h-16 items-center justify-center">
-        <h1 className="text-xl font-bold">Motyw aplikacji</h1>
+        <h1 className="text-xl font-semibold">Motyw aplikacji</h1>
       </header>
 
       <main className="flex-1 p-4">

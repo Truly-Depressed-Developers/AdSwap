@@ -47,7 +47,7 @@ export default function ProfilePage() {
   return (
     <div className="flex min-h-[calc(100vh-6rem)] flex-col bg-background p-4">
       <header className="flex h-16 items-center justify-center">
-        <h1 className="text-xl font-bold">Mój Profil</h1>
+        <h1 className="text-xl font-semibold">Mój Profil</h1>
       </header>
 
       <main className="flex-1 overflow-y-auto flex flex-col justify-between">
