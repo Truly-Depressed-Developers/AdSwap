@@ -9,7 +9,7 @@ Innovative platform for physical advertising exchange, connecting local business
 - Topic: Lokalny biznes
 - Timeframe: 10-11.01.2026, 24 hours
 
-# Tech Stack
+## Tech Stack
 
 <img alt="NEXT.JS" src="https://img.shields.io/badge/Next.js-000000.svg?style=for-the-badge&logo=nextdotjs&logoColor=white"/>
 <img alt="REACTJS" src="https://img.shields.io/badge/React-61DAFB.svg?style=for-the-badge&logo=React&logoColor=black"/>
@@ -20,7 +20,7 @@ Innovative platform for physical advertising exchange, connecting local business
 <img alt="PRISMA" src="https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white"/>
 <img alt="TRPC" src="https://img.shields.io/badge/tRPC-2596BE?style=for-the-badge&logo=trpc&logoColor=white"/>
 
-# Screenshots
+## Screenshots
 
 [Presentation](media\AdSwap_Truly_Depressed_Developers.pptx)
 
@@ -29,7 +29,7 @@ Innovative platform for physical advertising exchange, connecting local business
 ![mockup 3](media/mockup_3.png)
 ![mockup 4](media/mockup_4.png)
 
-# Authors
+## Authors
 
 - [@Spookyless](https://github.com/Spookyless)
 - [@xWikuss](https://github.com/xWikuss)
