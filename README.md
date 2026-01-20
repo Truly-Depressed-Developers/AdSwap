@@ -22,7 +22,7 @@ Innovative platform for physical advertising exchange, connecting local business
 
 ## Screenshots
 
-[Presentation](media\AdSwap_Truly_Depressed_Developers.pptx)
+[Presentation](media/AdSwap_Truly_Depressed_Developers.pptx)
 
 ![mockup 1](media/mockup_1.png)
 ![mockup 2](media/mockup_2.png)
